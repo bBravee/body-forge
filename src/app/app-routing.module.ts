@@ -13,6 +13,7 @@ const routes: Routes = [
     path: 'log-in',
     component: AuthFormComponent,
     canActivate: [authGuard],
+    pathMatch: 'full',
   },
 ];
 

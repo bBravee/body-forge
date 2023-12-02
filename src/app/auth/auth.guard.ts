@@ -5,5 +5,7 @@ import { inject } from '@angular/core';
 export const authGuard: CanActivateFn = (route, state) => {
   const authService: AuthService = inject(AuthService);
 
+  console.log(authService.isLoggedUser$.getValue());
+
   return !authService.isLoggedUser$.getValue();
 };
