@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BehaviorSubject, Observable, from, of } from 'rxjs';
+import { BehaviorSubject, Observable, from } from 'rxjs';
 import { ILogin } from 'src/app/shared/interfaces/ILogIn.model';
 
 @Injectable({

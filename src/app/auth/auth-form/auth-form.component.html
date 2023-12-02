@@ -11,15 +11,60 @@
       <span class="p-inputgroup-addon">
         <i class="pi pi-envelope"></i>
       </span>
-      <input pInputText placeholder="Email" formControlName="email" />
+      <input
+        [ngClass]="{
+          'login-input':
+            (logInForm.controls['email'].touched &&
+              logInForm.controls['email'].value === '') ||
+            fieldsInvalid
+        }"
+        pInputText
+        placeholder="Email"
+        formControlName="email"
+      />
     </div>
+    <small
+      *ngIf="
+        logInForm.controls['email'].touched &&
+        logInForm.controls['email'].value === ''
+      "
+      id="login-help"
+      class="login-help"
+      >Email field is required.</small
+    >
     <div class="p-inputgroup">
       <span class="p-inputgroup-addon">
         <i class="pi pi-lock"></i>
       </span>
-      <input pInputText placeholder="Password" formControlName="password" />
+      <input
+        [ngClass]="{
+          'login-input':
+            (logInForm.controls['password'].touched &&
+              logInForm.controls['password'].value === '') ||
+            fieldsInvalid
+        }"
+        type="password"
+        pInputText
+        placeholder="Password"
+        formControlName="password"
+      />
     </div>
+    <small
+      *ngIf="
+        logInForm.controls['password'].touched &&
+        logInForm.controls['password'].value === ''
+      "
+      id="login-help"
+      class="login-help"
+      >Password field is required.</small
+    >
 
-    <button pButton pRipple label="Submit" class="p-button-success"></button>
+    <button
+      [disabled]="!logInForm.valid"
+      pButton
+      pRipple
+      label="Submit"
+      class="p-button-success"
+    ></button>
   </form>
 </div>
