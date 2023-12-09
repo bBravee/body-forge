@@ -1,0 +1,17 @@
+:host {
+    ::ng-deep .custom-card {
+        padding: 1rem;
+        cursor: pointer;
+
+        .p-card-content {
+            display: none;
+        }
+    }
+}
+
+:host {
+    ::ng-deep .custom-card:hover {
+        border: 2px solid var(--primary-color);
+        
+    }
+}

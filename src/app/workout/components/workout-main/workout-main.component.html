@@ -1,5 +1,48 @@
-<div class="container">
-  <div class="row">
+<div
+  class="flex flex-column w-full justify-content-center align-items-center dashboard"
+>
+  <div
+    class="flex flex-column w-full align-items-center justify-content-center col-12 md:col-4 mt-4 mb-4"
+  >
+    <p-avatar
+      label="U"
+      pBadge
+      value="4"
+      size="xlarge"
+      [style]="{ 'background-color': 'var(--primary-color)', color: '#ffffff' }"
+    ></p-avatar>
+    <h5>Jakub</h5>
+  </div>
+
+  <p-divider class="w-full"></p-divider>
+
+  <div class="card grid w-5 mt-4 mb-4">
+    <div class="col-6 card-wrapper">
+      <p-card styleClass="custom-card" class="text-center" header="Statistics">
+      </p-card>
+    </div>
+    <div class="col-6 card-wrapper" routerLink="/new-workout">
+      <p-card styleClass="custom-card" class="text-center" header="Add workout">
+      </p-card>
+    </div>
+    <div class="col-6 card-wrapper">
+      <p-card styleClass="custom-card" class="text-center" header="Measures">
+      </p-card>
+    </div>
+    <div class="col-6 card-wrapper">
+      <p-card styleClass="custom-card" class="text-center" header="Workouts">
+      </p-card>
+    </div>
+  </div>
+
+  <p-divider class="w-full"></p-divider>
+
+  <div class="card">
+    <h1>Previous trainings</h1>
+  </div>
+</div>
+
+<!-- <div class="row">
     <button
       type="button"
       pButton
@@ -12,5 +55,4 @@
   <p-divider></p-divider>
   <div class="col">
     <h3>Previous Workouts</h3>
-  </div>
-</div>
+  </div> -->

@@ -4,7 +4,6 @@ import { AuthFormComponent } from './auth-form/auth-form.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ToastModule } from 'primeng/toast';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({

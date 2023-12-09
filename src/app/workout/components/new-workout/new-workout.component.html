@@ -1,47 +1,11 @@
 <div class="w-full flex flex-column justify-content-center align-items-center">
   <h1 class="m-6">Add Exercise</h1>
-  <form
-    class="flex flex-column justify-content-center align-items-center w-full"
-    [formGroup]="myForm"
-    (ngSubmit)="onSubmit()"
-  >
-    <div class="flex flex-column gap-2 w-5 m-2">
-      <label htmlFor="username">Exercise Name</label>
-      <input
-        pInputText
-        id="name"
-        aria-describedby="username-help"
-        formControlName="name"
-      />
-    </div>
-    <div class="flex flex-column gap-2 w-5 m-2">
-      <label htmlFor="username">Sets</label>
-      <input
-        pInputText
-        id="sets"
-        aria-describedby="username-help"
-        formControlName="sets"
-      />
-    </div>
-    <div class="flex flex-column gap-2 w-5 m-2">
-      <label htmlFor="username">Reps</label>
-      <input
-        pInputText
-        id="reps"
-        aria-describedby="username-help"
-        formControlName="reps"
-      />
-    </div>
-
-    <button
-      type="button"
-      pButton
-      pRipple
-      label="Add Exercise"
-      class="p-button-success m-4"
-      (click)="onSubmit()"
-    ></button>
-  </form>
+  <p-button
+    label="Add exercise"
+    icon="pi pi-plus"
+    size="large"
+    (click)="showForm()"
+  ></p-button>
   <p-divider class="w-full"></p-divider>
   <h1>Added Exercises</h1>
   <app-exercises-list></app-exercises-list>
