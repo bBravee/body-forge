@@ -10,9 +10,16 @@ import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ExercisesListComponent } from './components/exercises-list/exercises-list.component';
+import { SharedModule } from '../shared/shared.module';
+import { WorkoutFormComponent } from './components/new-workout/workout-form/workout-form.component';
 
 @NgModule({
-  declarations: [WorkoutMainComponent, NewWorkoutComponent, ExercisesListComponent],
+  declarations: [
+    WorkoutMainComponent,
+    NewWorkoutComponent,
+    ExercisesListComponent,
+    WorkoutFormComponent,
+  ],
   imports: [
     CommonModule,
     DividerModule,
@@ -22,6 +29,7 @@ import { ExercisesListComponent } from './components/exercises-list/exercises-li
     RouterModule,
     ButtonModule,
     InputTextModule,
+    SharedModule,
   ],
 })
 export class WorkoutModule {}

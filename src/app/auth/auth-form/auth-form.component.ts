@@ -34,6 +34,7 @@ export class AuthFormComponent implements OnInit {
   logIn() {
     this.authService.logIn(this.logInForm.value).subscribe(
       (res) => {
+        console.log(this.authService.loggedUser);
         this.authService.isLoggedUser$.next(true);
         this.toastService.showToast({
           severity: toastStatus.success,

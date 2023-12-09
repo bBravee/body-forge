@@ -8,8 +8,18 @@ import { ILogin } from 'src/app/shared/interfaces/ILogIn.model';
 })
 export class AuthService {
   isLoggedUser$ = new BehaviorSubject<boolean>(false);
-
-  constructor(private auth: AngularFireAuth) {}
+  loggedUser: any;
+  constructor(private auth: AngularFireAuth) {
+    this.auth.authState.subscribe((user) => {
+      if (user) {
+        this.loggedUser = user;
+        this.isLoggedUser$.next(true);
+      } else {
+        this.loggedUser = null;
+        this.isLoggedUser$.next(false);
+      }
+    });
+  }
 
   logIn(credentials: ILogin): Observable<any> {
     return from(

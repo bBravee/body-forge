@@ -1,0 +1,42 @@
+<form
+  class="flex flex-column justify-content-center align-items-center w-full"
+  [formGroup]="myForm"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="flex flex-column gap-2 w-5 m-2">
+    <label htmlFor="username">Exercise Name</label>
+    <input
+      pInputText
+      id="name"
+      aria-describedby="username-help"
+      formControlName="name"
+    />
+  </div>
+  <div class="flex flex-column gap-2 w-5 m-2">
+    <label htmlFor="username">Sets</label>
+    <input
+      pInputText
+      id="sets"
+      aria-describedby="username-help"
+      formControlName="sets"
+    />
+  </div>
+  <div class="flex flex-column gap-2 w-5 m-2">
+    <label htmlFor="username">Reps</label>
+    <input
+      pInputText
+      id="reps"
+      aria-describedby="username-help"
+      formControlName="reps"
+    />
+  </div>
+
+  <button
+    type="button"
+    pButton
+    pRipple
+    label="Add Exercise"
+    class="m-4"
+    (click)="onSubmit()"
+  ></button>
+</form>

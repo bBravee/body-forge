@@ -8,12 +8,12 @@ const routes: Routes = [
   {
     path: 'workout-main',
     component: WorkoutMainComponent,
-    canActivate: [userFeaturesGuard],
+    // canActivate: [userFeaturesGuard],
   },
   {
     path: 'new-workout',
     component: NewWorkoutComponent,
-    canActivate: [userFeaturesGuard],
+    // canActivate: [userFeaturesGuard],
   },
 ];
 
