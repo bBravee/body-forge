@@ -22,7 +22,12 @@
       </p-card>
     </div>
     <div class="col-6 card-wrapper" routerLink="/new-workout">
-      <p-card styleClass="custom-card" class="text-center" header="Add workout">
+      <p-card
+        styleClass="custom-card"
+        class="text-center"
+        header="Add workout"
+        (click)="addNewTraining()"
+      >
       </p-card>
     </div>
     <div class="col-6 card-wrapper">

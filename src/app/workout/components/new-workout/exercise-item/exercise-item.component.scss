@@ -1,0 +1,10 @@
+.exercise-item {
+    transition: all 0.1s ease-in-out;
+    border: 1px solid var(--surface-d);
+     border-radius: 3px;
+    &:hover {
+        transform: scale(1.05);
+        border: 1px solid ;
+        box-shadow: var(--focus-ring);
+    }
+}
