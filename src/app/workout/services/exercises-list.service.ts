@@ -20,12 +20,8 @@ export class ExercisesListService {
   }
 
   getExercisesForTraining(trainingId: string) {
-    this.http
-      .get(
-        `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings/${trainingId}/exercises.json`
-      )
-      .subscribe((res) => {
-        this.exercisesList$.next(Object.values(res));
-      });
+    return this.http.get(
+      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings/${trainingId}/exercises.json`
+    );
   }
 }

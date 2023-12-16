@@ -31,10 +31,6 @@ export class ExerciseItemComponent {
           );
         })
       )
-      .subscribe((res) => {
-        this.exercisesListService.getExercisesForTraining(
-          this.currentTrainingId
-        );
-      });
+      .subscribe();
   }
 }
