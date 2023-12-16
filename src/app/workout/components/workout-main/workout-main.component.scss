@@ -11,7 +11,7 @@
 
 :host {
     ::ng-deep .custom-card:hover {
-        border: 2px solid var(--primary-color);
+        box-shadow:  var(--focus-ring);
         
     }
 }

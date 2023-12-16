@@ -12,6 +12,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ExercisesListComponent } from './components/exercises-list/exercises-list.component';
 import { SharedModule } from '../shared/shared.module';
 import { WorkoutFormComponent } from './components/new-workout/workout-form/workout-form.component';
+import { ExerciseItemComponent } from './components/new-workout/exercise-item/exercise-item.component';
+import { ExerciseListItemComponent } from './components/exercises-list/exercise-list-item/exercise-list-item.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { WorkoutFormComponent } from './components/new-workout/workout-form/work
     NewWorkoutComponent,
     ExercisesListComponent,
     WorkoutFormComponent,
+    ExerciseItemComponent,
+    ExerciseListItemComponent,
   ],
   imports: [
     CommonModule,

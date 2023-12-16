@@ -1,5 +1,8 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 @Component({
   selector: 'app-workout-main',
@@ -11,7 +14,6 @@ export class WorkoutMainComponent implements OnInit {
     id: 2,
     name: 'saaaaaaaaasdsa',
   };
-  private testResponse: { id: number; name: string };
 
   constructor(private http: HttpClient) {}
 
@@ -25,5 +27,15 @@ export class WorkoutMainComponent implements OnInit {
           console.log(response[i].id);
         }
       });
+  }
+
+  addNewTraining() {
+    console.log('request');
+    this.http
+      .post(
+        'https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/lZWS0qyLYbRwweu9Ehfl0umkIDE2/trainings.json',
+        {}
+      )
+      .subscribe();
   }
 }

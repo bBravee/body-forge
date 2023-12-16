@@ -5,8 +5,9 @@ import { MessageService } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { CardModule } from 'primeng/card';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [],
@@ -17,6 +18,7 @@ import { ButtonModule } from 'primeng/button';
     AvatarGroupModule,
     CardModule,
     DynamicDialogModule,
+    DialogModule,
     ButtonModule,
   ],
   exports: [
@@ -25,8 +27,9 @@ import { ButtonModule } from 'primeng/button';
     AvatarGroupModule,
     CardModule,
     DynamicDialogModule,
+    DialogModule,
     ButtonModule,
   ],
-  providers: [MessageService],
+  providers: [MessageService, DialogService],
 })
 export class SharedModule {}

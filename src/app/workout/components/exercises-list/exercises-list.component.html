@@ -1,5 +1,3 @@
-<div>
-  <h2>{{ exercise.name }}</h2>
-  <h3>{{ exercise.sets }}</h3>
-  <h3>{{ exercise.reps }}</h3>
+<div *ngFor="let exercise of userExercises | async">
+  <app-exercise-list-item></app-exercise-list-item>
 </div>
