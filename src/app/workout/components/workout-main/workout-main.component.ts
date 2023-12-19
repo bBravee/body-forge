@@ -1,5 +1,6 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -15,7 +16,7 @@ export class WorkoutMainComponent implements OnInit {
     name: 'saaaaaaaaasdsa',
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.http
@@ -30,12 +31,15 @@ export class WorkoutMainComponent implements OnInit {
   }
 
   addNewTraining() {
-    console.log('request');
     this.http
       .post(
         'https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/lZWS0qyLYbRwweu9Ehfl0umkIDE2/trainings.json',
-        {}
+        {
+          date: new Date(),
+        }
       )
-      .subscribe();
+      .subscribe(() => {
+        this.router.navigate(['/new-workout']);
+      });
   }
 }

@@ -24,13 +24,16 @@ export class ExerciseItemComponent {
       .getTrainingsListForUser()
       .pipe(
         concatMap((trainings) => {
-          const currentTrainingId = Object.keys(trainings)[0];
+          const keys = Object.keys(trainings);
+          this.currentTrainingId = keys[keys.length - 1];
           return this.exercisesListService.addExerciseToTrainingById(
-            currentTrainingId,
+            this.currentTrainingId,
             exercise
           );
         })
       )
-      .subscribe();
+      .subscribe(() =>
+        this.exercisesListService.getExercisesForCurrentTraining()
+      );
   }
 }

@@ -8,6 +8,8 @@ import { CardModule } from 'primeng/card';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [],
@@ -20,6 +22,8 @@ import { DialogModule } from 'primeng/dialog';
     DynamicDialogModule,
     DialogModule,
     ButtonModule,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
   ],
   exports: [
     ToastModule,
@@ -29,6 +33,8 @@ import { DialogModule } from 'primeng/dialog';
     DynamicDialogModule,
     DialogModule,
     ButtonModule,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
   ],
   providers: [MessageService, DialogService],
 })
