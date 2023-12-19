@@ -1,3 +1,15 @@
-<div *ngFor="let exercise of userExercises | async">
-  <app-exercise-list-item></app-exercise-list-item>
+<h1 *ngIf="isListEmpty">List is empty</h1>
+<!-- <app-exercise-list-item></app-exercise-list-item> -->
+<p-toast></p-toast>
+<div *ngFor="let exercise of userExercises | async; trackBy: identify">
+  <app-exercise-list-item
+    [eventEmitter]="submitEmitter"
+    [exercise]="exercise"
+  ></app-exercise-list-item>
 </div>
+<p-confirmDialog></p-confirmDialog>
+<p-button
+  class="w-full"
+  label="Submit"
+  (click)="confirmSubmit($event)"
+></p-button>

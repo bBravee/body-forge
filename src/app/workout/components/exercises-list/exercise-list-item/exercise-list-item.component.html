@@ -1,1 +1,43 @@
-<p>exercise-list-item works!</p>
+<div class="exercise-list-item mb-2 p-4">
+  <div class="flex align-items-center justify-content-center">
+    <p-avatar
+      class="flex align-items-center justify-content-center"
+      icon="pi pi-user"
+      shape="circle"
+      size="xlarge"
+    ></p-avatar>
+  </div>
+  <p-divider layout="horizontal"></p-divider>
+  <div class="flex w-full justify-content-between">
+    <div class="flex justify-content-center gap-4 w-full">
+      <h1>{{ exercise.name }} ({{ exercise.muscle }})</h1>
+    </div>
+  </div>
+  <p-button class="w-full" label="Add Set" (click)="addSet()"></p-button>
+  <form [formGroup]="setForm" class="flex flex-column gap-2">
+    <div class="grid">
+      <div class="col-2"><h3>Set</h3></div>
+      <div class="col-4"><h3>Reps</h3></div>
+      <div class="col-5 ml-3"><h3>Weight</h3></div>
+    </div>
+    <div formArrayName="sets" *ngFor="let s of sets.controls; let i = index">
+      <div [formGroupName]="i" class="grid mb-2">
+        <h2 class="col-2">{{ i + 1 }}</h2>
+        <input
+          class="col-4"
+          type="number"
+          pInputText
+          formControlName="reps"
+          id="{{ 'reps' + i }}"
+        />
+        <input
+          class="col-5 ml-3"
+          type="number"
+          pInputText
+          formControlName="weight"
+          id="{{ 'weight' + i }}"
+        />
+      </div>
+    </div>
+  </form>
+</div>

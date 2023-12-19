@@ -1,0 +1,9 @@
+.exercise-list-item {
+    background-color: var(--surface-a);
+    border: 1px solid var(--surface-d);
+}
+
+::ng-deep .p-button {
+    width: 100%;
+}
+

@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IExercise } from '../models/IExercise.model';
 import { IExerciseFromDB } from '../models/IExerciseFromDB.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AddExerciseFormService {
-  formValue$ = new Subject<IExercise>();
+  // formValue$ = new Subject<IExercise>();
 
   constructor(private http: HttpClient) {}
 

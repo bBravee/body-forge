@@ -51,6 +51,6 @@ export class WorkoutFormComponent {
   }
 
   protected onSubmit() {
-    this.addExerciseFormService.formValue$.next(this.myForm.value);
+    // this.addExerciseFormService.formValue$.next(this.myForm.value);
   }
 }
