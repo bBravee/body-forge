@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-workout-main',
@@ -11,14 +12,14 @@ import 'firebase/compat/firestore';
   styleUrls: ['./workout-main.component.scss'],
 })
 export class WorkoutMainComponent implements OnInit {
-  private mockObj = {
-    id: 2,
-    name: 'saaaaaaaaasdsa',
-  };
-
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    console.log(this.authService.loggedUser.uid);
     this.http
       .get<{ [key: string]: { id: number; name: string } }>(
         'https://angular-training-app-60da2-default-rtdb.firebaseio.com/trainings.json'
@@ -33,7 +34,7 @@ export class WorkoutMainComponent implements OnInit {
   addNewTraining() {
     this.http
       .post(
-        'https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/lZWS0qyLYbRwweu9Ehfl0umkIDE2/trainings.json',
+        `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings.json`,
         {
           date: new Date(),
         }
