@@ -60,11 +60,18 @@
     >
 
     <button
+      routerLink="/register"
+      pButton
+      pRipple
+      label="Sign up"
+      class="w-5"
+    ></button>
+    <button
       [disabled]="!logInForm.valid"
       pButton
       pRipple
       label="Submit"
-      class="p-button-success"
+      class="w-5"
     ></button>
   </form>
 </div>

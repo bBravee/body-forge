@@ -14,6 +14,8 @@ import { SharedModule } from '../shared/shared.module';
 import { WorkoutFormComponent } from './components/new-workout/workout-form/workout-form.component';
 import { ExerciseItemComponent } from './components/new-workout/exercise-item/exercise-item.component';
 import { ExerciseListItemComponent } from './components/exercises-list/exercise-list-item/exercise-list-item.component';
+import { TrainingsListComponent } from './components/trainings-list/trainings-list.component';
+import { TrainingsListItemComponent } from './components/trainings-list/trainings-list-item/trainings-list-item.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { ExerciseListItemComponent } from './components/exercises-list/exercise-
     WorkoutFormComponent,
     ExerciseItemComponent,
     ExerciseListItemComponent,
+    TrainingsListComponent,
+    TrainingsListItemComponent,
   ],
   imports: [
     CommonModule,
