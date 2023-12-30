@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
 export class NavbarComponent implements OnInit {
   items: MenuItem[] | undefined;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.authService.isLoggedUser$.subscribe((res) => {
@@ -24,6 +25,14 @@ export class NavbarComponent implements OnInit {
           label: 'Statistics',
           routerLink: 'statistics',
           visible: res,
+        },
+        {
+          label: 'Log out',
+          command: () =>
+            this.authService.logOut().subscribe((res) => {
+              this.router.navigate(['log-in']);
+            }),
+          // visible: !res,
         },
         {
           label: 'Log in',

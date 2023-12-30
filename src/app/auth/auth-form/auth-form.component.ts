@@ -32,24 +32,26 @@ export class AuthFormComponent implements OnInit {
   }
 
   logIn() {
-    this.authService.logIn(this.logInForm.value).subscribe(
-      (res) => {
-        console.log(this.authService.loggedUser);
-        this.authService.isLoggedUser$.next(true);
-        this.toastService.showToast({
-          severity: toastStatus.success,
-          message: toastMessages.loginOk,
-        });
-        this.router.navigate(['workout-main']);
-      },
-      (error: any) => {
-        this.toastService.showToast({
-          severity: toastStatus.error,
-          message: toastMessages.loginError,
-        });
-        this.fieldsInvalid = true;
-        console.log(error);
-      }
-    );
+    this.authService.logIn(this.logInForm.value);
+    // this.authService.logIn(this.logInForm.value).subscribe(
+    //   () => {
+    //     console.log('logIn from component call');
+    //     console.log(this.authService.loggedUser);
+    //     this.authService.isLoggedUser$.next(true);
+    //     this.toastService.showToast({
+    //       severity: toastStatus.success,
+    //       message: toastMessages.loginOk,
+    //     });
+    //     this.router.navigate(['workout-main']);
+    //   },
+    //   (error: any) => {
+    //     this.toastService.showToast({
+    //       severity: toastStatus.error,
+    //       message: toastMessages.loginError,
+    //     });
+    //     this.fieldsInvalid = true;
+    //     console.log(error);
+    //   }
+    // );
   }
 }

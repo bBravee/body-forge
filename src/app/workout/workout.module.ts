@@ -16,6 +16,7 @@ import { ExerciseItemComponent } from './components/new-workout/exercise-item/ex
 import { ExerciseListItemComponent } from './components/exercises-list/exercise-list-item/exercise-list-item.component';
 import { TrainingsListComponent } from './components/trainings-list/trainings-list.component';
 import { TrainingsListItemComponent } from './components/trainings-list/trainings-list-item/trainings-list-item.component';
+import { TrainingListItemDetailsComponent } from './components/trainings-list/training-list-item-details/training-list-item-details.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TrainingsListItemComponent } from './components/trainings-list/training
     ExerciseListItemComponent,
     TrainingsListComponent,
     TrainingsListItemComponent,
+    TrainingListItemDetailsComponent,
   ],
   imports: [
     CommonModule,

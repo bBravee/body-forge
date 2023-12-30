@@ -6,20 +6,38 @@
       shape="circle"
       size="xlarge"
     ></p-avatar>
-    <div class="workout-details flex justify-content-center gap-8">
-      <div class="flex flex-column text-center">
+    <div class="workout-details grid text-center">
+      <div class="col-12 md:col-6 lg:col-4 flex flex-column">
         <h3 class="mb-0">Date</h3>
         <p>{{ trainingDate }}</p>
       </div>
-      <div class="flex flex-column text-center">
+      <div class="col-12 md:col-6 lg:col-4 flex flex-column">
         <h3 class="mb-0">Workout name</h3>
-        <p>Afternoon training</p>
+        <p>Afternoon Training</p>
       </div>
-      <div class="flex flex-column text-center">
+      <div class="col-12 md:col-6 lg:col-4 flex flex-column">
         <h3 class="mb-0">Volume</h3>
-        <p>880kg</p>
+        <p>900 kg</p>
       </div>
     </div>
   </div>
   <p-divider class="w-full" layout="horizontal"></p-divider>
+  <div class="w-full text-center" *ngFor="let exercise of exercisesList">
+    <h3>{{ exercise.name }}</h3>
+    <div class="grid">
+      <div class="col-4">
+        <p>Set</p>
+      </div>
+      <div class="col-4">
+        <p>Rep</p>
+      </div>
+      <div class="col-4">
+        <p>Weight</p>
+      </div>
+    </div>
+    <app-training-list-item-details
+      [sets]="exercise.sets"
+    ></app-training-list-item-details>
+    <p-divider class="w-full" layout="horizontal"></p-divider>
+  </div>
 </div>
