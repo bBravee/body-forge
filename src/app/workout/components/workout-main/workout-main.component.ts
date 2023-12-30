@@ -19,16 +19,16 @@ export class WorkoutMainComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.authService.loggedUser.uid);
-    this.http
-      .get<{ [key: string]: { id: number; name: string } }>(
-        'https://angular-training-app-60da2-default-rtdb.firebaseio.com/trainings.json'
-      )
-      .subscribe((response) => {
-        for (const i in response) {
-          console.log(response[i].id);
-        }
-      });
+    // console.log(this.authService.loggedUser.uid);
+    // this.http
+    //   .get<{ [key: string]: { id: number; name: string } }>(
+    //     'https://angular-training-app-60da2-default-rtdb.firebaseio.com/trainings.json'
+    //   )
+    //   .subscribe((response) => {
+    //     for (const i in response) {
+    //       console.log(response[i].id);
+    //     }
+    //   });
   }
 
   addNewTraining() {

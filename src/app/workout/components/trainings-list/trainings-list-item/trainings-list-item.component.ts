@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Exercise } from 'src/app/workout/models/Exercise.type';
+import { Exercise } from 'src/app/workout/models/TrainingsList.interface';
 import {
   ExerciseSet,
   WorkoutFromDB,
@@ -13,11 +13,14 @@ import {
 export class TrainingsListItemComponent implements OnInit {
   @Input() training: WorkoutFromDB;
   trainingDate: string;
+  exercisesList: Exercise[];
   sets: ExerciseSet[];
 
   ngOnInit(): void {
+    console.log(this.training);
     this.trainingDate = this.training.date;
     const exercises = Object.values(this.training.exercises);
+    this.exercisesList = exercises;
     console.log(exercises);
   }
 }

@@ -3,7 +3,12 @@
 }
 
 .trainings-list {
+    padding: 2rem;
+    gap: 4rem;
+}
+
+.training-list-item {
     background-color: var(--surface-a);
     border: 1px solid var(--surface-d);
-    padding: 2rem
+    padding: 2rem;
 }
