@@ -7,7 +7,6 @@ const routes: Routes = [
   {
     path: 'statistics',
     component: StatisticsComponent,
-    canActivate: [userFeaturesGuard],
   },
 ];
 
