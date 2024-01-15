@@ -1,10 +1,3 @@
-// export type TrainingsList = Record<
-//   string,
-//   {
-//     date: Date;
-//     exercises: Record<string, string>;
-//   }
-// >;
 export interface ExerciseSet {
   reps: number;
   weight: number;

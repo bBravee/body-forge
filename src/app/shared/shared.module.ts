@@ -12,6 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TableModule } from 'primeng/table';
 import { RouterModule } from '@angular/router';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [],
@@ -25,9 +27,11 @@ import { RouterModule } from '@angular/router';
     DialogModule,
     ButtonModule,
     ReactiveFormsModule,
+    FormsModule,
     ConfirmDialogModule,
     TableModule,
     RouterModule,
+    DropdownModule,
   ],
   exports: [
     ToastModule,
@@ -38,9 +42,11 @@ import { RouterModule } from '@angular/router';
     DialogModule,
     ButtonModule,
     ReactiveFormsModule,
+    FormsModule,
     ConfirmDialogModule,
     TableModule,
     RouterModule,
+    DropdownModule,
   ],
   providers: [MessageService, DialogService],
 })

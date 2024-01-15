@@ -3,13 +3,23 @@ import { WorkoutFromDB } from '../models/TrainingsList.interface';
 import { TrainingsListService } from './trainings-list.service';
 import { Exercise } from '../models/Exercise.type';
 import { of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingStatisticsService {
   trainingsList: WorkoutFromDB[];
-  constructor(private trainingListService: TrainingsListService) {}
+  constructor(
+    private http: HttpClient,
+    private trainingListService: TrainingsListService
+  ) {}
+
+  getAllExercises() {
+    return this.http.get(
+      'https://angular-training-app-60da2-default-rtdb.firebaseio.com/exercises.json'
+    );
+  }
 
   getTrainingDetails(training: WorkoutFromDB) {
     const exercises = Object.values(training.exercises);
@@ -49,23 +59,4 @@ export class TrainingStatisticsService {
     );
     return maxWeight;
   }
-
-  // getUserExercises(exerciseName: string) {
-  //   const chartData: { lab: any; datasets: string[] } = {
-  //     lab: [],
-  //     datasets: [],
-  //   };
-  //   this.trainingListService.getTrainingsListForUser().subscribe((res) => {
-  //     this.trainingsList = Object.values(res);
-  //     this.trainingsList.forEach((training) => {
-  //       Object.values(training.exercises).forEach((exercise) => {
-  //         if (exercise.name === exerciseName) {
-  //           chartData.lab.push(exercise.name);
-  //           // targetExercises.push({ date: training.date, exercise: exercise });
-  //         }
-  //       });
-  //     });
-  //   });
-  //   return of(chartData);
-  // }
 }

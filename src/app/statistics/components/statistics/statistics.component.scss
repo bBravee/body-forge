@@ -1,0 +1,31 @@
+:host {
+    ::ng-deep .p-dropdown {
+            width: 50%;
+            padding: 3%;
+            background-color: var(--surface-b);
+            border: 1px solid var(--surface-d);
+            color: var(--highlight-text-color);
+            &:hover {
+            border: 1px solid var(--primary-color);
+            box-shadow: var(--focus-ring);
+        }
+        }
+
+    ::ng-deep .p-button {
+        width: 50%;
+            padding: 3%;
+            background-color: var(--surface-b);
+            border: 1px solid var(--surface-d);
+            color: var(--highlight-text-color);
+            &:hover {
+            border: 1px solid var(--primary-color);
+            box-shadow: var(--focus-ring);
+
+    }
+}
+}
+
+
+canvas {
+    width: 85%  !important;
+}

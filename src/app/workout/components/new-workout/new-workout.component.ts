@@ -21,7 +21,7 @@ export class NewWorkoutComponent {
       const exercisesArr = Object.values(res);
       this.ref = this.dialogService.open(WorkoutFormComponent, {
         header: 'Select',
-        width: '50%',
+        width: '80%',
         contentStyle: { overflow: 'auto' },
         baseZIndex: 10000,
         maximizable: true,
