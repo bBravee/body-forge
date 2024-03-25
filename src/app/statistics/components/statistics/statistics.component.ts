@@ -4,8 +4,12 @@ import Chart from 'chart.js/auto';
 import { TrainingsListService } from 'src/app/workout/services/trainings-list.service';
 import { cs } from 'date-fns/locale';
 import { format } from 'date-fns';
-import { WorkoutFromDB } from 'src/app/workout/models/TrainingsList.interface';
+import { WorkoutFromDB } from 'src/app/workout/models/TrainingsList.type';
 import { Router } from '@angular/router';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ToastService } from 'src/app/core/services/toast.service';
+import { toastStatus } from 'src/app/shared/enums/toastStatus.enum';
+import { toastMessages } from 'src/app/shared/enums/toastMessages.enum';
 
 @Component({
   selector: 'app-statistics',
@@ -17,11 +21,12 @@ export class StatisticsComponent implements OnInit {
   exercises: { name: string; muscle: string }[] = [];
   selectedExercise: { name: string; muscle: string } | undefined;
   userTrainings: WorkoutFromDB[];
-  currentYearTrainings: number[] = [];
+  private currentYearTrainings: number[] = [];
   labels: any = [];
   datasets: any = [];
 
   constructor(
+    private toastService: ToastService,
     private trainingStatisticsService: TrainingStatisticsService,
     private trainingsListService: TrainingsListService,
     private router: Router
@@ -32,29 +37,33 @@ export class StatisticsComponent implements OnInit {
 
     this.trainingStatisticsService.getAllExercises().subscribe((exercises) => {
       this.exercises = Object.values(exercises);
+      console.log(exercises);
     });
-    // this.trainingStatisticsService.getUserExercises().subscribe((trainings) => {
-    //   Object.values(trainings).forEach((training) => {
-    //     Object.values(training.exercises).forEach((exercise) => {
-    //       if (exercise.name === 'Lateral Raises') {
-    //         this.labels.push(
-    //           this.trainingStatisticsService.transformDateFormat(training.date)
-    //         );
-    //         this.datasets.push(
-    //           this.trainingStatisticsService.computeMaxExerciseWeight(exercise)
-    //         );
-    //       }
-    //     });
-    //   });
-    //   this.createChart(this.labels, this.datasets);
-    // });
+
+    this.trainingStatisticsService.getFavoriteExercise();
   }
 
   protected onSelectExercise() {
-    console.log(this.selectedExercise);
-    if (this.selectedExercise) {
-      this.router.navigate([`statistics/${this.selectedExercise.name}`]);
-    }
+    this.trainingsListService
+      .getTrainingsListForUser()
+      .subscribe((trainings) => {
+        const hasChoosenExercise = Object.values(trainings).some((training) => {
+          return (
+            training.exercises &&
+            Object.values(training.exercises).some(
+              (exercise) => exercise.name === this.selectedExercise?.name
+            )
+          );
+        });
+        if (hasChoosenExercise) {
+          this.router.navigate([`statistics/${this.selectedExercise?.name}`]);
+        } else {
+          this.toastService.showToast({
+            severity: toastStatus.error,
+            message: toastMessages.noExercisesFound,
+          });
+        }
+      });
   }
 
   private prepareWorkoutsCountChart() {
@@ -123,24 +132,5 @@ export class StatisticsComponent implements OnInit {
         aspectRatio: 2.5,
       },
     });
-
-    // this.chart = new Chart('MyChart', {
-    //   type: 'line',
-
-    //   data: {
-    //     labels: labels,
-    //     datasets: [
-    //       {
-    //         label: 'Weight',
-    //         data: datasets,
-    //         backgroundColor: '#FFD54F',
-    //         borderColor: '#ffe284',
-    //       },
-    //     ],
-    //   },
-    //   options: {
-    //     aspectRatio: 2.5,
-    //   },
-    // });
   }
 }

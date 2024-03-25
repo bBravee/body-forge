@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrainingStatisticsService } from 'src/app/workout/services/training-statistics.service';
 import Chart from 'chart.js/auto';
+import { TrainingsListService } from 'src/app/workout/services/trainings-list.service';
 
 @Component({
   selector: 'app-exersise-stats',
@@ -29,7 +30,8 @@ export class ExersiseStatsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private trainingStatisticsService: TrainingStatisticsService
+    private trainingStatisticsService: TrainingStatisticsService,
+    private trainingsListService: TrainingsListService
   ) {}
 
   ngOnInit(): void {
@@ -44,21 +46,27 @@ export class ExersiseStatsComponent implements OnInit {
   }
 
   private prepareExerciseChart(exerciseName: string) {
-    this.trainingStatisticsService.getUserExercises().subscribe((trainings) => {
-      Object.values(trainings).forEach((training) => {
-        Object.values(training.exercises).forEach((exercise) => {
-          if (exercise.name === exerciseName) {
-            this.labels.push(
-              this.trainingStatisticsService.transformDateFormat(training.date)
-            );
-            this.datasets.push(
-              this.trainingStatisticsService.computeMaxExerciseWeight(exercise)
-            );
-          }
+    this.trainingsListService
+      .getTrainingsListForUser()
+      .subscribe((trainings) => {
+        Object.values(trainings).forEach((training) => {
+          Object.values(training.exercises).forEach((exercise) => {
+            if (exercise.name === exerciseName) {
+              this.labels.push(
+                this.trainingStatisticsService.transformDateFormat(
+                  training.date
+                )
+              );
+              this.datasets.push(
+                this.trainingStatisticsService.computeMaxExerciseWeight(
+                  exercise
+                )
+              );
+            }
+          });
         });
+        this.createChart(this.labels, this.datasets);
       });
-      this.createChart(this.labels, this.datasets);
-    });
   }
 
   private createChart(labels: any, datasets: any) {
@@ -88,6 +96,15 @@ export class ExersiseStatsComponent implements OnInit {
         ],
       },
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: `Maximum weight used in individual training sessions (${this.choosenExercise})`,
+            font: {
+              size: 24,
+            },
+          },
+        },
         aspectRatio: 2.5,
         scales: {
           yAxis: {

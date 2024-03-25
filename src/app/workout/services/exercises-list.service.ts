@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { IExerciseFromDB } from '../models/IExerciseFromDB.model';
+import { IExerciseFromDB } from '../models/IExerciseFromDB.type';
 import { BehaviorSubject, concatMap } from 'rxjs';
 import { TrainingsListService } from './trainings-list.service';
 import { ExerciseDetails } from '../models/ExerciseDetails.type';
@@ -27,8 +27,6 @@ export class ExercisesListService {
     );
   }
 
-  // Napisać metodę getExercisesForCurrentTraining i wywołać ją w exercise-item kiedy zostaną zapisane dane
-  // niech metoda pobiera dane dla aktualnego treningu i przypisuje je do subjecta. W exercise-list będzie subscribe do tego subjecta
   getExercisesForCurrentTraining() {
     this.trainingsListService
       .getTrainingsListForUser()

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BehaviorSubject, Observable, from } from 'rxjs';
+import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { ICredentials } from 'src/app/shared/interfaces/ILogIn.model';
 import * as auth from 'firebase/auth';
 import { Router } from '@angular/router';
@@ -24,6 +24,8 @@ export class AuthService {
   isLoggedUser$ = new BehaviorSubject<boolean>(false);
   loggedUser: any;
   fieldsInvalid: boolean;
+  authToken: any;
+  redirectUrl: string | null = null;
 
   constructor(
     private auth: AngularFireAuth,
@@ -45,48 +47,71 @@ export class AuthService {
   }
 
   logIn(credentials: ICredentials) {
-    console.log('logIn call');
-    from(
+    const signInObservable = from(
       this.auth.signInWithEmailAndPassword(
         credentials.email,
         credentials.password
       )
-    ).subscribe(
-      () => {
-        this.auth.authState.subscribe(
-          (user) => {
+    );
+
+    signInObservable.subscribe({
+      next: () => {
+        this.auth.authState.subscribe({
+          next: (user) => {
             if (user) {
               this.toastService.showToast({
                 severity: toastStatus.success,
                 message: toastMessages.loginOk,
               });
-              this.router.navigate(['workout-main']);
+
+              user.getIdToken().then((token) => {
+                this.authToken = token;
+                this.hasUser(user.uid);
+              });
+
+              const redirectUrl = this.redirectUrl || '/workout-main';
+              this.router.navigateByUrl(redirectUrl);
+              this.redirectUrl = null;
             }
           },
-          (error) => {
+          error: (error) => {
             this.toastService.showToast({
               severity: toastStatus.error,
               message: toastMessages.loginError,
             });
-          }
-        );
+          },
+        });
       },
-      (error) => {
+      error: (error) => {
         this.toastService.showToast({
           severity: toastStatus.error,
           message: toastMessages.loginError,
         });
-      }
-    );
+      },
+    });
   }
 
   logOut() {
     return from(this.auth.signOut());
   }
 
+  hasUser(id: any) {
+    this.getAllUsers().subscribe((users) => {
+      if (!Object.keys(users).includes(id)) {
+        // Dodanie nowego usera do bazy przekazująca paramsa z jego tokenem
+      }
+    });
+  }
+
   register(user: ICredentials) {
     return from(
       this.auth.createUserWithEmailAndPassword(user.email, user.password)
+    );
+  }
+
+  getAllUsers() {
+    return this.http.get(
+      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users.json?auth=${this.authToken}`
     );
   }
 

@@ -1,31 +1,31 @@
-export interface ExerciseSet {
+export type ExerciseSet = {
   reps: number;
   weight: number;
-}
+};
 
-export interface Exercise {
+export type Exercise = {
   muscle: string;
   name: string;
   sets: ExerciseSet[];
-}
+};
 
-export interface Workout {
+export type Workout = {
   date: string;
   exercises: Exercise[];
-}
+};
 
-interface ExerciseSetFromDB {
+type ExerciseSetFromDB = {
   reps: number;
   weight: number;
-}
+};
 
-interface ExerciseFromDB {
+type ExerciseFromDB = {
   muscle: string;
   name: string;
   sets: Record<string, ExerciseSet>;
-}
+};
 
-export interface WorkoutFromDB {
+export type WorkoutFromDB = {
   date: string;
   exercises: Record<string, Exercise>;
-}
+};

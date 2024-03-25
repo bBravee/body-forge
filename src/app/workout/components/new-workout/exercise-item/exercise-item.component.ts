@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { concatMap, mergeMap } from 'rxjs';
-import { IExerciseFromDB } from 'src/app/workout/models/IExerciseFromDB.model';
+import { IExerciseFromDB } from 'src/app/workout/models/IExerciseFromDB.type';
+import { AddExerciseFormService } from 'src/app/workout/services/add-exercise-form.service';
 import { ExercisesListService } from 'src/app/workout/services/exercises-list.service';
 import { TrainingsListService } from 'src/app/workout/services/trainings-list.service';
 
@@ -15,11 +16,17 @@ export class ExerciseItemComponent {
 
   constructor(
     private trainingsListService: TrainingsListService,
-    private exercisesListService: ExercisesListService
+    private exercisesListService: ExercisesListService,
+    private addExerciseService: AddExerciseFormService
   ) {}
+
+  protected toggleFormVisibility() {
+    this.addExerciseService.toggleFormModal();
+  }
 
   // Dopisanie ćwiczenia do listy w danym treningu użytkownika
   protected onAddExercise(exercise: IExerciseFromDB) {
+    this.toggleFormVisibility();
     this.trainingsListService
       .getTrainingsListForUser()
       .pipe(

@@ -1,19 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { IExerciseFromDB } from '../models/IExerciseFromDB.model';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { IExerciseFromDB } from '../models/IExerciseFromDB.type';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AddExerciseFormService {
-  // formValue$ = new Subject<IExercise>();
+  showFormModal$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getExercises() {
     return this.http.get<IExerciseFromDB>(
-      'https://angular-training-app-60da2-default-rtdb.firebaseio.com/exercises.json'
+      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/exercises.json`
     );
+  }
+
+  toggleFormModal() {
+    this.showFormModal$.next(!this.showFormModal$.getValue());
+    console.log(this.showFormModal$.getValue());
   }
 }

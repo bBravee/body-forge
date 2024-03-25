@@ -1,7 +1,7 @@
 <div
   class="w-full h-full flex flex-column justify-content-center align-items-center"
 >
-  <h2>Log In Form</h2>
+  <h1>Sign Up</h1>
   <form
     [formGroup]="registerForm"
     (ngSubmit)="register()"
@@ -26,11 +26,17 @@
     <small
       *ngIf="
         registerForm.controls['email'].touched &&
-        registerForm.controls['email'].value === ''
+        registerForm.controls['email'].hasError('required')
       "
       id="login-help"
       class="login-help"
       >Email field is required.</small
+    >
+    <small
+      *ngIf="registerForm.controls['email'].hasError('email')"
+      id="login-help"
+      class="login-help"
+      >This is not a valid email.</small
     >
     <div class="p-inputgroup">
       <span class="p-inputgroup-addon">
@@ -40,7 +46,7 @@
         [ngClass]="{
           'login-input':
             (registerForm.controls['password'].touched &&
-              registerForm.controls['password'].value === '') ||
+              registerForm.controls['password'].hasError('required')) ||
             fieldsInvalid
         }"
         type="password"
@@ -52,11 +58,17 @@
     <small
       *ngIf="
         registerForm.controls['password'].touched &&
-        registerForm.controls['password'].value === ''
+        registerForm.controls['password'].hasError('required')
       "
       id="login-help"
       class="login-help"
       >Password field is required.</small
+    >
+    <small
+      *ngIf="registerForm.controls['password'].hasError('minlength')"
+      id="login-help"
+      class="login-help"
+      >Password must be at least 6 characters long.</small
     >
     <div class="p-inputgroup">
       <span class="p-inputgroup-addon">
@@ -66,7 +78,7 @@
         [ngClass]="{
           'login-input':
             (registerForm.controls['passwordRepeated'].touched &&
-              registerForm.controls['passwordRepeated'].value === '') ||
+              registerForm.controls['passwordRepeated'].hasError('required')) ||
             fieldsInvalid
         }"
         type="password"
@@ -78,15 +90,29 @@
     <small
       *ngIf="
         registerForm.controls['passwordRepeated'].touched &&
-        registerForm.controls['passwordRepeated'].value === ''
+        registerForm.controls['passwordRepeated'].hasError('required')
       "
       id="login-help"
       class="login-help"
-      >Password field is required.</small
+      >Repeat password field is required.</small
+    >
+    <small
+      *ngIf="
+        registerForm.controls['passwordRepeated'].touched &&
+        registerForm.controls['passwordRepeated'].value !==
+          registerForm.controls['password'].value
+      "
+      id="login-help"
+      class="login-help"
+      >Passwords are not the same.</small
     >
 
     <button
-      [disabled]="!registerForm.valid"
+      [disabled]="
+        !registerForm.valid ||
+        registerForm.controls['passwordRepeated'].value !==
+          registerForm.controls['password'].value
+      "
       pButton
       pRipple
       label="Submit"

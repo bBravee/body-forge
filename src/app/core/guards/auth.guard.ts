@@ -1,21 +1,13 @@
 import {
   ActivatedRouteSnapshot,
-  CanActivateFn,
   Router,
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { AuthService } from '../core/services/auth.service';
-import { Injectable, inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-// export const authGuard: CanActivateFn = (route, state) => {
-//   const authService: AuthService = inject(AuthService);
-
-//   console.log(authService.isLoggedUser$.getValue());
-
-//   return !authService.isLoggedUser$.getValue();
-// };
 @Injectable({
   providedIn: 'root',
 })
@@ -26,8 +18,11 @@ export class AuthGuard {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
     if (this.authService.isLoggedIn !== true) {
-      console.log('user not logged');
+      if (!this.authService.redirectUrl) {
+        this.authService.redirectUrl = state.url;
+      }
       this.router.navigate(['log-in']);
+      return false;
     }
     return true;
   }
