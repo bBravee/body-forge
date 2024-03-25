@@ -5,19 +5,19 @@
     class="flex flex-column w-full align-items-center justify-content-center col-12 md:col-4 mt-4 mb-4"
   >
     <p-avatar
-      label="U"
+      [label]="userId.charAt(0)"
       pBadge
       value="4"
       size="xlarge"
       [style]="{ 'background-color': 'var(--primary-color)', color: '#ffffff' }"
     ></p-avatar>
-    <h5>Jakub</h5>
+    <h5>{{ userId }}</h5>
   </div>
 
   <p-divider class="w-full"></p-divider>
 
-  <div class="card grid w-5 mt-4 mb-4">
-    <div class="col-6 card-wrapper">
+  <div class="card grid w-8 mt-4 mb-4">
+    <div class="col-12 md:col-6 card-wrapper">
       <p-card
         styleClass="custom-card"
         class="text-center"
@@ -26,7 +26,7 @@
       >
       </p-card>
     </div>
-    <div class="col-6 card-wrapper">
+    <div class="col-12 md:col-6 card-wrapper">
       <p-card
         styleClass="custom-card"
         class="text-center"
@@ -35,19 +35,11 @@
       >
       </p-card>
     </div>
-    <div class="col-6 card-wrapper">
-      <p-card styleClass="custom-card" class="text-center" header="Measures">
-      </p-card>
-    </div>
-    <div class="col-6 card-wrapper">
-      <p-card styleClass="custom-card" class="text-center" header="Workouts">
-      </p-card>
-    </div>
   </div>
 
   <p-divider class="w-full"></p-divider>
 
-  <div class="card flex flex-column align-items-center w-5">
+  <div class="card flex flex-column align-items-center w-full">
     <h1>Previous trainings</h1>
     <app-trainings-list></app-trainings-list>
   </div>

@@ -12,6 +12,8 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./workout-main.component.scss'],
 })
 export class WorkoutMainComponent implements OnInit {
+  protected userId: any;
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -19,16 +21,7 @@ export class WorkoutMainComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // console.log(this.authService.loggedUser.uid);
-    // this.http
-    //   .get<{ [key: string]: { id: number; name: string } }>(
-    //     'https://angular-training-app-60da2-default-rtdb.firebaseio.com/trainings.json'
-    //   )
-    //   .subscribe((response) => {
-    //     for (const i in response) {
-    //       console.log(response[i].id);
-    //     }
-    //   });
+    this.userId = this.authService.loggedUser.uid;
   }
 
   addNewTraining() {

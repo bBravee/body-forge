@@ -1,15 +1,30 @@
 import { Injectable, TestabilityRegistry } from '@angular/core';
-import { WorkoutFromDB } from '../models/TrainingsList.interface';
+import { WorkoutFromDB } from '../models/TrainingsList.type';
 import { TrainingsListService } from './trainings-list.service';
 import { Exercise } from '../models/Exercise.type';
-import { of } from 'rxjs';
+import { BehaviorSubject, count, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingStatisticsService {
   trainingsList: WorkoutFromDB[];
-  constructor(private trainingListService: TrainingsListService) {}
+  favoriteExercises$ = new BehaviorSubject<string[]>([]);
+  trainingsCount$ = new BehaviorSubject<number>(0);
+
+  constructor(
+    private http: HttpClient,
+    private trainingListService: TrainingsListService,
+    private authService: AuthService
+  ) {}
+
+  getAllExercises() {
+    return this.http.get(
+      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/exercises.json`
+    );
+  }
 
   getTrainingDetails(training: WorkoutFromDB) {
     const exercises = Object.values(training.exercises);
@@ -37,10 +52,6 @@ export class TrainingStatisticsService {
     return `${day}-${month}-${year}`;
   }
 
-  getUserExercises() {
-    return this.trainingListService.getTrainingsListForUser();
-  }
-
   computeMaxExerciseWeight(exercise: any) {
     const sets: any[] = Object.values(exercise.sets);
     const maxWeight = sets.reduce(
@@ -50,22 +61,37 @@ export class TrainingStatisticsService {
     return maxWeight;
   }
 
-  // getUserExercises(exerciseName: string) {
-  //   const chartData: { lab: any; datasets: string[] } = {
-  //     lab: [],
-  //     datasets: [],
-  //   };
-  //   this.trainingListService.getTrainingsListForUser().subscribe((res) => {
-  //     this.trainingsList = Object.values(res);
-  //     this.trainingsList.forEach((training) => {
-  //       Object.values(training.exercises).forEach((exercise) => {
-  //         if (exercise.name === exerciseName) {
-  //           chartData.lab.push(exercise.name);
-  //           // targetExercises.push({ date: training.date, exercise: exercise });
-  //         }
-  //       });
-  //     });
-  //   });
-  //   return of(chartData);
-  // }
+  getFavoriteExercise() {
+    this.trainingListService
+      .getTrainingsListForUser()
+      .subscribe((trainings) => {
+        let favoriteExercises: string[] = [];
+        const counts: any = {};
+        Object.values(trainings).forEach((training) => {
+          Object.values(training.exercises).forEach((exercise) => {
+            const name = exercise.name;
+            counts[name] = (counts[name] || 0) + 1;
+          });
+
+          let maxCount = 0;
+          for (const name in counts) {
+            if (counts[name] > maxCount) {
+              maxCount = counts[name];
+              favoriteExercises = [name];
+            } else if (counts[name] === maxCount) {
+              favoriteExercises.push(name);
+            }
+          }
+        });
+        this.favoriteExercises$.next(favoriteExercises);
+      });
+  }
+
+  getTotalTrainingsCount() {
+    this.trainingListService
+      .getTrainingsListForUser()
+      .subscribe((trainings) => {
+        this.trainingsCount$.next(Object.values(trainings).length);
+      });
+  }
 }

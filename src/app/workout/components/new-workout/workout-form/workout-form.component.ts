@@ -2,7 +2,7 @@ import { Component, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { BehaviorSubject, filter } from 'rxjs';
-import { IExerciseFromDB } from 'src/app/workout/models/IExerciseFromDB.model';
+import { IExerciseFromDB } from 'src/app/workout/models/IExerciseFromDB.type';
 import { AddExerciseFormService } from 'src/app/workout/services/add-exercise-form.service';
 
 @Component({

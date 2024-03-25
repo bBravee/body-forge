@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TrainingsListService } from '../../services/trainings-list.service';
-import { WorkoutFromDB } from '../../models/TrainingsList.interface';
+import { WorkoutFromDB } from '../../models/TrainingsList.type';
 
 @Component({
   selector: 'app-trainings-list',
@@ -8,7 +8,7 @@ import { WorkoutFromDB } from '../../models/TrainingsList.interface';
   styleUrls: ['./trainings-list.component.scss'],
 })
 export class TrainingsListComponent implements OnInit {
-  trainingsList: WorkoutFromDB[];
+  protected trainingsList: WorkoutFromDB[];
 
   constructor(private trainingsListService: TrainingsListService) {}
 

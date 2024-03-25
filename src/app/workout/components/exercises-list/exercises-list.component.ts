@@ -11,7 +11,7 @@ import { Exercise } from '../../models/Exercise.type';
   providers: [ConfirmationService, MessageService],
 })
 export class ExercisesListComponent implements OnInit {
-  userExercises = new BehaviorSubject<Exercise[]>([]);
+  protected userExercises$ = new BehaviorSubject<Exercise[]>([]);
   isListEmpty: boolean;
   submitEmitter = new EventEmitter();
 
@@ -25,14 +25,15 @@ export class ExercisesListComponent implements OnInit {
     this.exercisesListService.isListEmpty$.subscribe((res) => {
       this.isListEmpty = res;
     });
+    this.exercisesListService.exercisesList$.subscribe();
     this.exercisesListService.getExercisesForCurrentTraining();
     this.updateExercisesList();
   }
 
   private updateExercisesList() {
     this.exercisesListService.exercisesList$.subscribe((exercises) => {
-      this.userExercises.next(exercises);
-      console.log(this.userExercises.getValue());
+      this.userExercises$.next(exercises);
+      console.log(exercises);
     });
   }
 

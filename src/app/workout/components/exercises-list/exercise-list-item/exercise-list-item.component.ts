@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ExerciseDetails } from 'src/app/workout/models/ExerciseDetails.type';
 import { ExercisesListService } from 'src/app/workout/services/exercises-list.service';
@@ -17,13 +18,12 @@ export class ExerciseListItemComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private exercisesListService: ExercisesListService
+    private exercisesListService: ExercisesListService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    console.log(this.exercise.name + ' rerender');
     this.subscribeToSubmitEmitter();
-    console.log(this.exercise);
     this.setForm = this.fb.group({
       sets: this.fb.array([this.createSet()], Validators.required),
     });
@@ -36,16 +36,19 @@ export class ExerciseListItemComponent implements OnInit {
   }
 
   addSet() {
-    console.log('addSetCall');
     this.sets.push(this.createSet());
   }
 
   private onSubmit() {
-    console.log(this.setForm.value);
     this.setForm.value.sets.forEach((element: ExerciseDetails) => {
       this.exercisesListService
         .addDetailsToExercise(element, this.exercise.id)
-        .subscribe((res) => console.log(res));
+        .subscribe(() => {
+          this.setForm.reset();
+          this.exercisesListService.exercisesList$.next([]);
+          this.exercisesListService.isListEmpty$.next(true);
+          this.router.navigate(['workout-main']);
+        });
     });
   }
 

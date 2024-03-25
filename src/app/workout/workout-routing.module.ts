@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { userFeaturesGuard } from '../core/guards/user-features.guard';
 import { WorkoutMainComponent } from './components/workout-main/workout-main.component';
 import { NewWorkoutComponent } from './components/new-workout/new-workout.component';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,7 +14,6 @@ const routes: Routes = [
   {
     path: 'new-workout',
     component: NewWorkoutComponent,
-    // canActivate: [userFeaturesGuard],
   },
 ];
 

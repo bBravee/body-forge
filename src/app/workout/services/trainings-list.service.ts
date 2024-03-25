@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { ExerciseSet, WorkoutFromDB } from '../models/TrainingsList.interface';
+import { ExerciseSet, WorkoutFromDB } from '../models/TrainingsList.type';
 
 @Injectable({
   providedIn: 'root',

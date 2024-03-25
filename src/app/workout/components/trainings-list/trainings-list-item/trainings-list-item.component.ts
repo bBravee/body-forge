@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TrainingDetails } from 'src/app/workout/models/TrainingDetails.type';
-import { Exercise } from 'src/app/workout/models/TrainingsList.interface';
+import { Exercise } from 'src/app/workout/models/TrainingsList.type';
 import {
   ExerciseSet,
   WorkoutFromDB,
-} from 'src/app/workout/models/TrainingsList.interface';
+} from 'src/app/workout/models/TrainingsList.type';
 import { TrainingStatisticsService } from 'src/app/workout/services/training-statistics.service';
 
 @Component({

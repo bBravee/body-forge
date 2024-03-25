@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { TrainingStatisticsService } from 'src/app/workout/services/training-statistics.service';
 import Chart from 'chart.js/auto';
+import { TrainingsListService } from 'src/app/workout/services/trainings-list.service';
+import { cs } from 'date-fns/locale';
+import { format } from 'date-fns';
+import { WorkoutFromDB } from 'src/app/workout/models/TrainingsList.type';
+import { Router } from '@angular/router';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ToastService } from 'src/app/core/services/toast.service';
+import { toastStatus } from 'src/app/shared/enums/toastStatus.enum';
+import { toastMessages } from 'src/app/shared/enums/toastMessages.enum';
 
 @Component({
   selector: 'app-statistics',
@@ -9,47 +18,117 @@ import Chart from 'chart.js/auto';
 })
 export class StatisticsComponent implements OnInit {
   public chart: any;
+  exercises: { name: string; muscle: string }[] = [];
+  selectedExercise: { name: string; muscle: string } | undefined;
+  userTrainings: WorkoutFromDB[];
+  private currentYearTrainings: number[] = [];
   labels: any = [];
   datasets: any = [];
 
-  constructor(private trainingStatisticsService: TrainingStatisticsService) {}
+  constructor(
+    private toastService: ToastService,
+    private trainingStatisticsService: TrainingStatisticsService,
+    private trainingsListService: TrainingsListService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.trainingStatisticsService.getUserExercises().subscribe((trainings) => {
-      Object.values(trainings).forEach((training) => {
-        Object.values(training.exercises).forEach((exercise) => {
-          if (exercise.name === 'Lateral Raises') {
-            this.labels.push(
-              this.trainingStatisticsService.transformDateFormat(training.date)
-            );
-            this.datasets.push(
-              this.trainingStatisticsService.computeMaxExerciseWeight(exercise)
-            );
-          }
+    this.prepareWorkoutsCountChart();
+
+    this.trainingStatisticsService.getAllExercises().subscribe((exercises) => {
+      this.exercises = Object.values(exercises);
+      console.log(exercises);
+    });
+
+    this.trainingStatisticsService.getFavoriteExercise();
+  }
+
+  protected onSelectExercise() {
+    this.trainingsListService
+      .getTrainingsListForUser()
+      .subscribe((trainings) => {
+        const hasChoosenExercise = Object.values(trainings).some((training) => {
+          return (
+            training.exercises &&
+            Object.values(training.exercises).some(
+              (exercise) => exercise.name === this.selectedExercise?.name
+            )
+          );
         });
+        if (hasChoosenExercise) {
+          this.router.navigate([`statistics/${this.selectedExercise?.name}`]);
+        } else {
+          this.toastService.showToast({
+            severity: toastStatus.error,
+            message: toastMessages.noExercisesFound,
+          });
+        }
       });
-      this.createChart(this.labels, this.datasets);
+  }
+
+  private prepareWorkoutsCountChart() {
+    this.trainingsListService.getTrainingsListForUser().subscribe((res) => {
+      this.userTrainings = Object.values(res).filter((training) => {
+        const trainingDate = new Date(training.date);
+        console.log(trainingDate.getMonth());
+        return trainingDate.getFullYear() === new Date().getFullYear();
+      });
+      for (let i = 0; i < 12; i++) {
+        const currentMonthRecords = this.userTrainings.reduce(
+          (count: number, record: any) => {
+            const trainingDate = new Date(record.date);
+            if (trainingDate.getMonth() === i) {
+              return count + 1;
+            } else {
+              return count;
+            }
+          },
+          0
+        );
+        this.currentYearTrainings.push(currentMonthRecords);
+      }
+      this.createChart(this.currentYearTrainings);
     });
   }
 
-  createChart(labels: any, datasets: any) {
-    console.log(datasets);
+  private createChart(datasets: any) {
     this.chart = new Chart('MyChart', {
-      type: 'line',
+      type: 'bar',
 
       data: {
-        labels: labels,
+        labels: [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ],
         datasets: [
           {
-            label: 'Weight',
+            label: 'Workouts Count',
             data: datasets,
             backgroundColor: '#FFD54F',
             borderColor: '#ffe284',
           },
-          // TODO: zrobić repsy odpowiadające ciężarowi jako kolejny dataset
         ],
       },
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Distribution of Exercise Counts Across Months (Current Year)',
+            font: {
+              size: 24,
+            },
+          },
+        },
         aspectRatio: 2.5,
       },
     });

@@ -1,7 +1,6 @@
 <h1 *ngIf="isListEmpty">List is empty</h1>
-<!-- <app-exercise-list-item></app-exercise-list-item> -->
 <p-toast></p-toast>
-<div *ngFor="let exercise of userExercises | async; trackBy: identify">
+<div *ngFor="let exercise of userExercises$ | async; trackBy: identify">
   <app-exercise-list-item
     [eventEmitter]="submitEmitter"
     [exercise]="exercise"
@@ -9,6 +8,7 @@
 </div>
 <p-confirmDialog></p-confirmDialog>
 <p-button
+  *ngIf="!isListEmpty"
   class="w-full"
   label="Submit"
   (click)="confirmSubmit($event)"
