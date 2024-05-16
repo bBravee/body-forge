@@ -2,6 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AddExerciseFormService } from '../../services/add-exercise-form.service';
 import { WorkoutFormComponent } from './workout-form/workout-form.component';
+import { NavigationStart, Router } from '@angular/router';
+import {
+  BehaviorSubject,
+  Observable,
+  filter,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { TrainingsListService } from '../../services/trainings-list.service';
+import { CanDeactivateType } from '../../models/CanDeactivateType.type';
 
 @Component({
   selector: 'app-new-workout',
@@ -13,7 +25,8 @@ export class NewWorkoutComponent implements OnInit {
 
   constructor(
     public dialogService: DialogService,
-    private addExerciseService: AddExerciseFormService
+    private addExerciseService: AddExerciseFormService,
+    private trainingsListService: TrainingsListService
   ) {}
 
   ngOnInit(): void {
@@ -24,6 +37,28 @@ export class NewWorkoutComponent implements OnInit {
         this.ref?.close();
       }
     });
+  }
+
+  canDeactivate(): CanDeactivateType {
+    return this.checkIfExercisesEmpty();
+  }
+
+  private checkIfExercisesEmpty() {
+    return this.trainingsListService.getCurrentTraining().pipe(
+      switchMap((training) => {
+        if (!training.training.hasOwnProperty('exercises')) {
+          return this.trainingsListService
+            .deleteTraining(training.trainingKey!)
+            .pipe(
+              map((res) => {
+                return true;
+              })
+            );
+        } else {
+          return of(true);
+        }
+      })
+    );
   }
 
   protected toggleFormVisibility() {

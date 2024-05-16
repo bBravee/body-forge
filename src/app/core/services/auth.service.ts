@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BehaviorSubject, Observable, from, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, from, map, of } from 'rxjs';
 import { ICredentials } from 'src/app/shared/interfaces/ILogIn.model';
 import * as auth from 'firebase/auth';
 import { Router } from '@angular/router';
 import { ToastService } from './toast.service';
 import { toastStatus } from 'src/app/shared/enums/toastStatus.enum';
 import { toastMessages } from 'src/app/shared/enums/toastMessages.enum';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 interface User {
   uid: string;

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IExerciseFromDB } from '../models/IExerciseFromDB.type';
-import { BehaviorSubject, concatMap } from 'rxjs';
+import { BehaviorSubject, concatMap, map } from 'rxjs';
 import { TrainingsListService } from './trainings-list.service';
 import { ExerciseDetails } from '../models/ExerciseDetails.type';
 
