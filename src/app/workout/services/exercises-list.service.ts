@@ -12,6 +12,7 @@ import { ExerciseDetails } from '../models/ExerciseDetails.type';
 export class ExercisesListService {
   isListEmpty$ = new BehaviorSubject<boolean>(true);
   exercisesList$ = new BehaviorSubject<any>([]);
+  isSomeExerciseEmpty$ = new BehaviorSubject<any>(false);
   currentTrainingId: string;
 
   constructor(
@@ -44,6 +45,7 @@ export class ExercisesListService {
         if (res === null) {
           console.log('empty');
           this.isListEmpty$.next(true);
+          this.exercisesList$.next([]);
         } else {
           const outputArr = Object.entries(res).map(([key, value]) => ({
             id: key,
@@ -59,6 +61,12 @@ export class ExercisesListService {
     return this.http.post(
       `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings/${this.currentTrainingId}/exercises/${exerciseId}/sets.json`,
       exerciseDetails
+    );
+  }
+
+  deleteExerciseFromTraining(exerciseId: string) {
+    return this.http.delete(
+      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings/${this.currentTrainingId}/exercises/${exerciseId}.json`
     );
   }
 }
