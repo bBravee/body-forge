@@ -16,7 +16,7 @@ export class ExercisesListComponent implements OnInit {
   submitEmitter = new EventEmitter();
 
   constructor(
-    private exercisesListService: ExercisesListService,
+    public exercisesListService: ExercisesListService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}

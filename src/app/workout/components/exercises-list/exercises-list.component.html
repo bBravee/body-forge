@@ -8,6 +8,7 @@
 </div>
 <p-confirmDialog></p-confirmDialog>
 <p-button
+  [disabled]="exercisesListService.isSomeExerciseEmpty$ | async"
   *ngIf="!isListEmpty"
   class="w-full"
   label="Submit"

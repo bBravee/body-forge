@@ -26,14 +26,30 @@ export class ExerciseListItemComponent implements OnInit {
   ngOnInit(): void {
     this.subscribeToSubmitEmitter();
     this.setForm = this.fb.group({
-      sets: this.fb.array([this.createSet()], Validators.required),
+      sets: this.fb.array([], Validators.required),
     });
+    this.sets.valueChanges.subscribe((sets: ExerciseDetails[]) =>
+      this.handleValueChanges(sets)
+    );
   }
 
   subscribeToSubmitEmitter() {
     this.eventEmitter.subscribe(() => {
       this.onSubmit();
     });
+  }
+
+  private handleValueChanges(sets: ExerciseDetails[]): void {
+    this.updateIsSomeExerciseEmptyFlag(sets);
+  }
+
+  private updateIsSomeExerciseEmptyFlag(sets: ExerciseDetails[]): void {
+    const isEmpty = sets.length === 0 || sets.some(this.isExerciseDetailEmpty);
+    this.exercisesListService.isSomeExerciseEmpty$.next(isEmpty);
+  }
+
+  private isExerciseDetailEmpty(set: ExerciseDetails): boolean {
+    return set.reps === null || set.weight === null;
   }
 
   protected addSet() {
@@ -54,14 +70,18 @@ export class ExerciseListItemComponent implements OnInit {
         .addDetailsToExercise(element, this.exercise.id)
         .subscribe(() => {
           this.setForm.reset();
-          this.exercisesListService.exercisesList$.next([]);
-          this.exercisesListService.isListEmpty$.next(true);
+          this.notifyExerciseListUpdate();
           this.router.navigate(['workout-main']);
         });
     });
   }
 
-  createSet(): FormGroup {
+  private notifyExerciseListUpdate(): void {
+    this.exercisesListService.exercisesList$.next([]);
+    this.exercisesListService.isListEmpty$.next(true);
+  }
+
+  private createSet(): FormGroup {
     return this.fb.group({
       reps: [null, Validators.required],
       weight: [null, Validators.required],

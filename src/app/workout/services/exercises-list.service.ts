@@ -12,7 +12,7 @@ import { ExerciseDetails } from '../models/ExerciseDetails.type';
 export class ExercisesListService {
   isListEmpty$ = new BehaviorSubject<boolean>(true);
   exercisesList$ = new BehaviorSubject<any>([]);
-  isSomeExerciseEmpty$ = new BehaviorSubject<any>(false);
+  isSomeExerciseEmpty$ = new BehaviorSubject<any>(true);
   currentTrainingId: string;
 
   constructor(

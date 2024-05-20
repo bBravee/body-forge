@@ -15,30 +15,32 @@
   </div>
   <p-button class="w-full" label="Add Set" (click)="addSet()"></p-button>
   <form [formGroup]="setForm" class="flex flex-column gap-2">
-    <div class="grid">
-      <div class="col-2"><h3>Set</h3></div>
-      <div class="col-4"><h3>Reps</h3></div>
-      <div class="col-5 ml-3"><h3>Weight</h3></div>
-    </div>
-    <div formArrayName="sets" *ngFor="let s of sets.controls; let i = index">
-      <div [formGroupName]="i" class="grid mb-2">
-        <h2 class="col-2">{{ i + 1 }}</h2>
-        <input
-          class="col-4"
-          type="number"
-          pInputText
-          formControlName="reps"
-          id="{{ 'reps' + i }}"
-        />
-        <input
-          class="col-5 ml-3"
-          type="number"
-          pInputText
-          formControlName="weight"
-          id="{{ 'weight' + i }}"
-        />
+    <ng-container *ngIf="sets.length > 0">
+      <div class="grid">
+        <div class="col-2"><h3>Set</h3></div>
+        <div class="col-4"><h3>Reps</h3></div>
+        <div class="col-5 ml-3"><h3>Weight</h3></div>
       </div>
-    </div>
+      <div formArrayName="sets" *ngFor="let s of sets.controls; let i = index">
+        <div [formGroupName]="i" class="grid mb-2">
+          <h2 class="col-2">{{ i + 1 }}</h2>
+          <input
+            class="col-4"
+            type="number"
+            pInputText
+            formControlName="reps"
+            id="{{ 'reps' + i }}"
+          />
+          <input
+            class="col-5 ml-3"
+            type="number"
+            pInputText
+            formControlName="weight"
+            id="{{ 'weight' + i }}"
+          />
+        </div>
+      </div>
+    </ng-container>
   </form>
   <p-divider layout="horizontal"></p-divider>
   <p-button
