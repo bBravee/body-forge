@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { concatMap, map, switchMap } from 'rxjs';
 import { ExerciseDetails } from 'src/app/workout/models/ExerciseDetails.type';
 import { ExercisesListService } from 'src/app/workout/services/exercises-list.service';
 

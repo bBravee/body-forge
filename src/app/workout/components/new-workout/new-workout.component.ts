@@ -14,6 +14,7 @@ import {
 } from 'rxjs';
 import { TrainingsListService } from '../../services/trainings-list.service';
 import { CanDeactivateType } from '../../models/CanDeactivateType.type';
+import { ExercisesListService } from '../../services/exercises-list.service';
 
 @Component({
   selector: 'app-new-workout',
@@ -26,7 +27,8 @@ export class NewWorkoutComponent implements OnInit {
   constructor(
     public dialogService: DialogService,
     private addExerciseService: AddExerciseFormService,
-    private trainingsListService: TrainingsListService
+    private trainingsListService: TrainingsListService,
+    private exercisesListService: ExercisesListService
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +48,10 @@ export class NewWorkoutComponent implements OnInit {
   private checkIfExercisesEmpty() {
     return this.trainingsListService.getCurrentTraining().pipe(
       switchMap((training) => {
-        if (!training.training.hasOwnProperty('exercises')) {
+        if (
+          !training.training.hasOwnProperty('exercises') ||
+          this.exercisesListService.isSomeExerciseEmpty$.getValue()
+        ) {
           return this.trainingsListService
             .deleteTraining(training.trainingKey!)
             .pipe(
