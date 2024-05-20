@@ -56,6 +56,11 @@ export class ExerciseListItemComponent implements OnInit {
     this.sets.push(this.createSet());
   }
 
+  protected deleteSet(id: number): void {
+    this.sets.removeAt(id);
+    console.log(this.sets);
+  }
+
   protected deleteExercise() {
     this.exercisesListService
       .deleteExerciseFromTraining(this.exercise.id)
