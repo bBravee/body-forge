@@ -28,10 +28,7 @@ export class NavbarComponent implements OnInit {
         },
         {
           label: 'Log out',
-          command: () =>
-            this.authService.logOut().subscribe((res) => {
-              this.router.navigate(['log-in']);
-            }),
+          command: () => this.authService.logOut().subscribe(),
           // visible: !res,
         },
         {
