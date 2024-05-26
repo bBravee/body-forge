@@ -40,7 +40,6 @@ export class ExerciseItemComponent {
         })
       )
       .subscribe(() => {
-        this.exercisesListService.isSomeExerciseEmpty$.next(true);
         this.exercisesListService.getExercisesForCurrentTraining();
       });
   }

@@ -37,7 +37,7 @@ export class AuthService {
       if (user) {
         this.loggedUser = user;
         localStorage.setItem('user', JSON.stringify(this.loggedUser));
-        JSON.parse(localStorage.getItem('user')!);
+        console.log(JSON.parse(localStorage.getItem('user')!));
         this.isLoggedUser$.next(true);
       } else {
         localStorage.setItem('user', 'null');
@@ -125,10 +125,10 @@ export class AuthService {
     );
   }
 
-  addNewUser(id: string | undefined) {
+  addNewUser(id: string | undefined, username: string) {
     return this.http.post(
       `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${id}.json`,
-      { registerDate: new Date().toDateString() }
+      { registerDate: new Date().toDateString(), username }
     );
   }
 

@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./workout-main.component.scss'],
 })
 export class WorkoutMainComponent implements OnInit {
-  protected userId: any;
+  protected username: string;
 
   constructor(
     private http: HttpClient,
@@ -21,7 +21,7 @@ export class WorkoutMainComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.authService.loggedUser.uid;
+    this.username = this.authService.loggedUser.displayName;
   }
 
   addNewTraining() {

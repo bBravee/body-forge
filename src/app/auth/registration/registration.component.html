@@ -14,6 +14,31 @@
       <input
         [ngClass]="{
           'login-input':
+            (registerForm.controls['username'].touched &&
+              registerForm.controls['username'].value === '') ||
+            fieldsInvalid
+        }"
+        pInputText
+        placeholder="Username"
+        formControlName="username"
+      />
+    </div>
+    <small
+      *ngIf="
+        registerForm.controls['username'].touched &&
+        registerForm.controls['username'].hasError('required')
+      "
+      id="login-help"
+      class="login-help"
+      >Username field is required.</small
+    >
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon">
+        <i class="pi pi-envelope"></i>
+      </span>
+      <input
+        [ngClass]="{
+          'login-input':
             (registerForm.controls['email'].touched &&
               registerForm.controls['email'].value === '') ||
             fieldsInvalid

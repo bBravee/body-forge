@@ -26,9 +26,10 @@ export class ExerciseListItemComponent implements OnInit {
     this.setForm = this.fb.group({
       sets: this.fb.array([], Validators.required),
     });
-    this.sets.valueChanges.subscribe((sets: ExerciseDetails[]) =>
-      this.handleValueChanges(sets)
-    );
+    this.updateIsSomeExerciseEmptyFlag(this.sets.value);
+    this.sets.valueChanges.subscribe((sets: ExerciseDetails[]) => {
+      this.handleValueChanges(sets);
+    });
   }
 
   subscribeToSubmitEmitter() {
@@ -72,7 +73,7 @@ export class ExerciseListItemComponent implements OnInit {
       this.exercisesListService
         .addDetailsToExercise(element, this.exercise.id)
         .subscribe(() => {
-          this.setForm.reset();
+          this.setForm.reset({}, { emitEvent: false });
           this.notifyExerciseListUpdate();
           this.router.navigate(['workout-main']);
         });

@@ -55,7 +55,7 @@ export class NewWorkoutComponent implements OnInit {
           return this.trainingsListService
             .deleteTraining(training.trainingKey!)
             .pipe(
-              map((res) => {
+              map(() => {
                 return true;
               })
             );
