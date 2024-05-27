@@ -2,19 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AddExerciseFormService } from '../../services/add-exercise-form.service';
 import { WorkoutFormComponent } from './workout-form/workout-form.component';
-import { NavigationStart, Router } from '@angular/router';
-import {
-  BehaviorSubject,
-  Observable,
-  filter,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+
+import { Observable, map, of, switchMap } from 'rxjs';
 import { TrainingsListService } from '../../services/trainings-list.service';
 import { CanDeactivateType } from '../../models/CanDeactivateType.type';
 import { ExercisesListService } from '../../services/exercises-list.service';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-new-workout',
@@ -28,10 +21,12 @@ export class NewWorkoutComponent implements OnInit {
     public dialogService: DialogService,
     private addExerciseService: AddExerciseFormService,
     private trainingsListService: TrainingsListService,
-    private exercisesListService: ExercisesListService
+    private exercisesListService: ExercisesListService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
+    this.exercisesListService.isFormSubmitted = false;
     this.addExerciseService.showFormModal$.subscribe((visibility) => {
       if (visibility) {
         this.showForm();
@@ -45,25 +40,63 @@ export class NewWorkoutComponent implements OnInit {
     return this.checkIfExercisesEmpty();
   }
 
-  private checkIfExercisesEmpty() {
+  private checkIfExercisesEmpty(): Observable<boolean> {
     return this.trainingsListService.getCurrentTraining().pipe(
       switchMap((training) => {
+        const isSomeExerciseEmpty =
+          this.exercisesListService.isSomeExerciseEmpty$.getValue();
+
         if (
           !training.training.hasOwnProperty('exercises') ||
-          this.exercisesListService.isSomeExerciseEmpty$.getValue()
+          isSomeExerciseEmpty
         ) {
-          return this.trainingsListService
-            .deleteTraining(training.trainingKey!)
-            .pipe(
-              map(() => {
-                return true;
-              })
-            );
+          return this.deleteTraining(training.trainingKey!);
+        } else if (!this.exercisesListService.isSomeExerciseEmpty$.getValue()) {
+          return this.confirmAndDeleteTraining(training.trainingKey!);
         } else {
           return of(true);
         }
       })
     );
+  }
+
+  private deleteTraining(trainingKey: string): Observable<boolean> {
+    return this.trainingsListService
+      .deleteTraining(trainingKey)
+      .pipe(map(() => true));
+  }
+
+  private confirmAndDeleteTraining(trainingKey: string): Observable<boolean> {
+    if (!this.exercisesListService.isFormSubmitted) {
+      return new Observable<boolean>((observer) => {
+        this.confirmationService.confirm({
+          message:
+            'Are you sure you want to stop creating training? The changes will not be saved.',
+          header: 'Confirmation',
+          icon: 'pi pi-exclamation-triangle',
+          acceptIcon: 'none',
+          rejectIcon: 'none',
+          rejectButtonStyleClass: 'p-button-text',
+          accept: () => {
+            this.trainingsListService
+              .deleteTraining(trainingKey)
+              .pipe(
+                map(() => {
+                  observer.next(true);
+                  observer.complete();
+                })
+              )
+              .subscribe();
+          },
+          reject: () => {
+            observer.next(false);
+            observer.complete();
+          },
+        });
+      });
+    } else {
+      return of(true);
+    }
   }
 
   protected toggleFormVisibility() {

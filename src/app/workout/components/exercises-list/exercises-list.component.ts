@@ -8,7 +8,6 @@ import { Exercise } from '../../models/Exercise.type';
   selector: 'app-exercises-list',
   templateUrl: './exercises-list.component.html',
   styleUrls: ['./exercises-list.component.scss'],
-  providers: [ConfirmationService, MessageService],
 })
 export class ExercisesListComponent implements OnInit {
   protected userExercises$ = new BehaviorSubject<Exercise[]>([]);

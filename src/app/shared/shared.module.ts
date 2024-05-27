@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { CardModule } from 'primeng/card';
@@ -16,7 +16,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
     ToastModule,
@@ -48,6 +47,6 @@ import { FormsModule } from '@angular/forms';
     RouterModule,
     DropdownModule,
   ],
-  providers: [MessageService, DialogService],
+  providers: [ConfirmationService, MessageService, DialogService],
 })
 export class SharedModule {}

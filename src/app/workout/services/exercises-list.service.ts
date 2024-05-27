@@ -13,6 +13,7 @@ export class ExercisesListService {
   isListEmpty$ = new BehaviorSubject<boolean>(true);
   exercisesList$ = new BehaviorSubject<any>([]);
   isSomeExerciseEmpty$ = new BehaviorSubject<any>(false);
+  isFormSubmitted = false;
   currentTrainingId: string;
 
   constructor(

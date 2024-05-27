@@ -69,6 +69,7 @@ export class ExerciseListItemComponent implements OnInit {
   }
 
   private onSubmit() {
+    this.exercisesListService.isFormSubmitted = true;
     this.setForm.value.sets.forEach((element: ExerciseDetails) => {
       this.exercisesListService
         .addDetailsToExercise(element, this.exercise.id)
