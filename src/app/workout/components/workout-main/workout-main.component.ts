@@ -5,6 +5,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { NewTrainingService } from '../../services/new-training.service';
 
 @Component({
   selector: 'app-workout-main',
@@ -17,7 +18,8 @@ export class WorkoutMainComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private newTrainingService: NewTrainingService
   ) {}
 
   ngOnInit(): void {
@@ -25,15 +27,7 @@ export class WorkoutMainComponent implements OnInit {
   }
 
   addNewTraining() {
-    this.http
-      .post(
-        `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings.json`,
-        {
-          date: new Date(),
-        }
-      )
-      .subscribe(() => {
-        this.router.navigate(['/new-workout']);
-      });
+    this.newTrainingService.addNewTraining();
+    this.router.navigate(['/new-workout']);
   }
 }

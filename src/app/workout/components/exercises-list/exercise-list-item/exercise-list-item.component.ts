@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ExerciseDetails } from 'src/app/workout/models/ExerciseDetails.type';
 import { ExercisesListService } from 'src/app/workout/services/exercises-list.service';
+import { NewTrainingService } from 'src/app/workout/services/new-training.service';
 
 @Component({
   selector: 'app-exercise-list-item',
@@ -18,7 +19,8 @@ export class ExerciseListItemComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private exercisesListService: ExercisesListService,
-    private router: Router
+    private router: Router,
+    private newTrainingService: NewTrainingService
   ) {}
 
   ngOnInit(): void {
@@ -69,8 +71,11 @@ export class ExerciseListItemComponent implements OnInit {
   }
 
   private onSubmit() {
+    console.log(this.setForm.value.sets);
     this.exercisesListService.isFormSubmitted = true;
+    this.newTrainingService.addExerciseToTraining(this.setForm.value.sets);
     this.setForm.value.sets.forEach((element: ExerciseDetails) => {
+      console.log(element);
       this.exercisesListService
         .addDetailsToExercise(element, this.exercise.id)
         .subscribe(() => {

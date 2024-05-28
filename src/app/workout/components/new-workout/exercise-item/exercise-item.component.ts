@@ -3,6 +3,7 @@ import { concatMap, mergeMap } from 'rxjs';
 import { IExerciseFromDB } from 'src/app/workout/models/IExerciseFromDB.type';
 import { AddExerciseFormService } from 'src/app/workout/services/add-exercise-form.service';
 import { ExercisesListService } from 'src/app/workout/services/exercises-list.service';
+import { NewTrainingService } from 'src/app/workout/services/new-training.service';
 import { TrainingsListService } from 'src/app/workout/services/trainings-list.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class ExerciseItemComponent {
   constructor(
     private trainingsListService: TrainingsListService,
     private exercisesListService: ExercisesListService,
-    private addExerciseService: AddExerciseFormService
+    private addExerciseService: AddExerciseFormService,
+    private newTrainingService: NewTrainingService
   ) {}
 
   protected toggleFormVisibility() {
@@ -27,20 +29,22 @@ export class ExerciseItemComponent {
   // Dopisanie ćwiczenia do listy w danym treningu użytkownika
   protected onAddExercise(exercise: IExerciseFromDB) {
     this.toggleFormVisibility();
-    this.trainingsListService
-      .getTrainingsListForUser()
-      .pipe(
-        concatMap((trainings) => {
-          const keys = Object.keys(trainings);
-          this.currentTrainingId = keys[keys.length - 1];
-          return this.exercisesListService.addExerciseToTrainingById(
-            this.currentTrainingId,
-            exercise
-          );
-        })
-      )
-      .subscribe(() => {
-        this.exercisesListService.getExercisesForCurrentTraining();
-      });
+    this.newTrainingService.addExerciseToTraining(exercise);
+
+    // this.trainingsListService
+    //   .getTrainingsListForUser()
+    //   .pipe(
+    //     concatMap((trainings) => {
+    //       const keys = Object.keys(trainings);
+    //       this.currentTrainingId = keys[keys.length - 1];
+    //       return this.exercisesListService.addExerciseToTrainingById(
+    //         this.currentTrainingId,
+    //         exercise
+    //       );
+    //     })
+    //   )
+    //   .subscribe(() => {
+    //     this.exercisesListService.getExercisesForCurrentTraining();
+    //   });
   }
 }
