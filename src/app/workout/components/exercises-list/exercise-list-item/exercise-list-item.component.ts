@@ -24,6 +24,7 @@ export class ExerciseListItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.exercise);
     this.subscribeToSubmitEmitter();
     this.setForm = this.fb.group({
       sets: this.fb.array([], Validators.required),
@@ -71,9 +72,11 @@ export class ExerciseListItemComponent implements OnInit {
   }
 
   private onSubmit() {
-    console.log(this.setForm.value.sets);
     this.exercisesListService.isFormSubmitted = true;
-    this.newTrainingService.addExerciseToTraining(this.setForm.value.sets);
+    this.newTrainingService.addSetsToExercise(
+      this.exercise.id,
+      this.setForm.value.sets
+    );
     this.setForm.value.sets.forEach((element: ExerciseDetails) => {
       console.log(element);
       this.exercisesListService
