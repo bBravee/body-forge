@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IExerciseFromDB } from '../models/IExerciseFromDB.type';
-import { BehaviorSubject, concatMap, map } from 'rxjs';
-import { TrainingsListService } from './trainings-list.service';
+import { BehaviorSubject } from 'rxjs';
 import { ExerciseDetails } from '../models/ExerciseDetails.type';
+import { Exercise } from '../models/ExerciseWithId.type';
 
 @Injectable({
   providedIn: 'root',
@@ -16,46 +16,13 @@ export class ExercisesListService {
   isFormSubmitted = false;
   currentTrainingId: string;
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private trainingsListService: TrainingsListService
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   addExerciseToTrainingById(trainingId: string, exercise: IExerciseFromDB) {
     return this.http.post(
       `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings/${trainingId}/exercises.json`,
       exercise
     );
-  }
-
-  getExercisesForCurrentTraining() {
-    this.trainingsListService
-      .getTrainingsListForUser()
-      .pipe(
-        concatMap((trainings) => {
-          const keys = Object.keys(trainings);
-          const currentTrainingId = keys[keys.length - 1];
-          this.currentTrainingId = currentTrainingId;
-          return this.http.get(
-            `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings/${currentTrainingId}/exercises.json`
-          );
-        })
-      )
-      .subscribe((res) => {
-        if (res === null) {
-          console.log('empty');
-          this.isListEmpty$.next(true);
-          this.exercisesList$.next([]);
-        } else {
-          const outputArr = Object.entries(res).map(([key, value]) => ({
-            id: key,
-            ...value,
-          }));
-          this.isListEmpty$.next(false);
-          this.exercisesList$.next(outputArr);
-        }
-      });
   }
 
   addDetailsToExercise(exerciseDetails: ExerciseDetails, exerciseId: string) {
@@ -69,5 +36,15 @@ export class ExercisesListService {
     return this.http.delete(
       `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings/${this.currentTrainingId}/exercises/${exerciseId}.json`
     );
+  }
+
+  checkIfExercisesEmpty() {
+    this.exercisesList$.getValue().length < 1
+      ? this.isListEmpty$.next(true)
+      : this.isListEmpty$.next(false);
+  }
+
+  updateExercisesList(updatedExercises: Exercise[]) {
+    this.exercisesList$.next(updatedExercises);
   }
 }

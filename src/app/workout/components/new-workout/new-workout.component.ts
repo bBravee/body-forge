@@ -8,6 +8,7 @@ import { TrainingsListService } from '../../services/trainings-list.service';
 import { CanDeactivateType } from '../../models/CanDeactivateType.type';
 import { ExercisesListService } from '../../services/exercises-list.service';
 import { ConfirmationService } from 'primeng/api';
+import { NewTrainingService } from '../../services/new-training.service';
 
 @Component({
   selector: 'app-new-workout',
@@ -20,7 +21,7 @@ export class NewWorkoutComponent implements OnInit {
   constructor(
     public dialogService: DialogService,
     private addExerciseService: AddExerciseFormService,
-    private trainingsListService: TrainingsListService,
+    private newTrainingService: NewTrainingService,
     private exercisesListService: ExercisesListService,
     private confirmationService: ConfirmationService
   ) {}
@@ -37,37 +38,11 @@ export class NewWorkoutComponent implements OnInit {
   }
 
   canDeactivate(): CanDeactivateType {
-    return this.checkIfExercisesEmpty();
+    return this.confirmAndDeleteTraining();
   }
 
-  private checkIfExercisesEmpty(): Observable<boolean> {
-    return this.trainingsListService.getCurrentTraining().pipe(
-      switchMap((training) => {
-        const isSomeExerciseEmpty =
-          this.exercisesListService.isSomeExerciseEmpty$.getValue();
-
-        if (
-          !training.training.hasOwnProperty('exercises') ||
-          isSomeExerciseEmpty
-        ) {
-          return this.deleteTraining(training.trainingKey!);
-        } else if (!this.exercisesListService.isSomeExerciseEmpty$.getValue()) {
-          return this.confirmAndDeleteTraining(training.trainingKey!);
-        } else {
-          return of(true);
-        }
-      })
-    );
-  }
-
-  private deleteTraining(trainingKey: string): Observable<boolean> {
-    return this.trainingsListService
-      .deleteTraining(trainingKey)
-      .pipe(map(() => true));
-  }
-
-  private confirmAndDeleteTraining(trainingKey: string): Observable<boolean> {
-    if (!this.exercisesListService.isFormSubmitted) {
+  private confirmAndDeleteTraining(): Observable<boolean> {
+    if (!this.exercisesListService.isFormSubmitted && this.hasExercises()) {
       return new Observable<boolean>((observer) => {
         this.confirmationService.confirm({
           message:
@@ -78,15 +53,10 @@ export class NewWorkoutComponent implements OnInit {
           rejectIcon: 'none',
           rejectButtonStyleClass: 'p-button-text',
           accept: () => {
-            this.trainingsListService
-              .deleteTraining(trainingKey)
-              .pipe(
-                map(() => {
-                  observer.next(true);
-                  observer.complete();
-                })
-              )
-              .subscribe();
+            this.exercisesListService.exercisesList$.next([]);
+            this.newTrainingService.resetTraining();
+            observer.next(true);
+            observer.complete();
           },
           reject: () => {
             observer.next(false);
@@ -97,6 +67,10 @@ export class NewWorkoutComponent implements OnInit {
     } else {
       return of(true);
     }
+  }
+
+  private hasExercises() {
+    return this.exercisesListService.exercisesList$.getValue().length > 0;
   }
 
   protected toggleFormVisibility() {

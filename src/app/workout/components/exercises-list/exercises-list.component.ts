@@ -2,7 +2,9 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ExercisesListService } from '../../services/exercises-list.service';
-import { Exercise } from '../../models/Exercise.type';
+import { NewTrainingService } from '../../services/new-training.service';
+import { Exercise } from '../../models/ExerciseWithId.type';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-exercises-list',
@@ -17,15 +19,19 @@ export class ExercisesListComponent implements OnInit {
   constructor(
     public exercisesListService: ExercisesListService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private newTrainingService: NewTrainingService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.exercisesListService.isListEmpty$.subscribe((res) => {
       this.isListEmpty = res;
     });
-    this.exercisesListService.exercisesList$.subscribe();
-    this.exercisesListService.getExercisesForCurrentTraining();
+    this.exercisesListService.exercisesList$.subscribe((exercises) => {
+      this.userExercises$.next(exercises);
+      console.log(this.userExercises$.getValue());
+    });
     this.updateExercisesList();
   }
 
@@ -37,6 +43,9 @@ export class ExercisesListComponent implements OnInit {
   }
 
   private submitExercises() {
+    this.newTrainingService
+      .saveNewTraining()
+      .subscribe(() => this.router.navigate(['workout-main']));
     this.submitEmitter.emit();
   }
 

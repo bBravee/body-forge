@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ExerciseDetails } from 'src/app/workout/models/ExerciseDetails.type';
@@ -31,6 +31,7 @@ export class ExerciseListItemComponent implements OnInit {
     });
     this.updateIsSomeExerciseEmptyFlag(this.sets.value);
     this.sets.valueChanges.subscribe((sets: ExerciseDetails[]) => {
+      this.newTrainingService.addSetsToExercise(this.exercise.id, sets);
       this.handleValueChanges(sets);
     });
   }
@@ -64,29 +65,19 @@ export class ExerciseListItemComponent implements OnInit {
   }
 
   protected deleteExercise() {
-    this.exercisesListService
-      .deleteExerciseFromTraining(this.exercise.id)
-      .subscribe(() =>
-        this.exercisesListService.getExercisesForCurrentTraining()
-      );
+    const { newTraining } = this.newTrainingService;
+    const exerciseId = this.exercise.id;
+
+    if (newTraining.exercises && newTraining.exercises[exerciseId]) {
+      this.newTrainingService.deleteExercise(exerciseId);
+    }
   }
 
   private onSubmit() {
     this.exercisesListService.isFormSubmitted = true;
-    this.newTrainingService.addSetsToExercise(
-      this.exercise.id,
-      this.setForm.value.sets
-    );
-    this.setForm.value.sets.forEach((element: ExerciseDetails) => {
-      console.log(element);
-      this.exercisesListService
-        .addDetailsToExercise(element, this.exercise.id)
-        .subscribe(() => {
-          this.setForm.reset({}, { emitEvent: false });
-          this.notifyExerciseListUpdate();
-          this.router.navigate(['workout-main']);
-        });
-    });
+    this.setForm.reset({}, { emitEvent: false });
+    this.notifyExerciseListUpdate();
+    this.newTrainingService.resetTraining();
   }
 
   private notifyExerciseListUpdate(): void {

@@ -16,8 +16,7 @@ export class TrainingStatisticsService {
 
   constructor(
     private http: HttpClient,
-    private trainingListService: TrainingsListService,
-    private authService: AuthService
+    private trainingListService: TrainingsListService
   ) {}
 
   getAllExercises() {
