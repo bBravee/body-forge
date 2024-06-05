@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+
+import { Exercise } from 'src/app/workout/models/Exercise.type';
+import { ExerciseSet } from 'src/app/workout/models/ExerciseSet.type';
+import { Training } from 'src/app/workout/models/Training.type';
 import { TrainingDetails } from 'src/app/workout/models/TrainingDetails.type';
-import { Exercise } from 'src/app/workout/models/TrainingsList.type';
-import {
-  ExerciseSet,
-  WorkoutFromDB,
-} from 'src/app/workout/models/TrainingsList.type';
+
 import { TrainingStatisticsService } from 'src/app/workout/services/training-statistics.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { TrainingStatisticsService } from 'src/app/workout/services/training-sta
   styleUrls: ['./trainings-list-item.component.scss'],
 })
 export class TrainingsListItemComponent implements OnInit {
-  @Input() training: WorkoutFromDB;
+  @Input() training: Training;
   trainingDate: string;
   exercisesList: Exercise[];
   sets: ExerciseSet[];

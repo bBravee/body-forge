@@ -2,14 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { TrainingStatisticsService } from 'src/app/workout/services/training-statistics.service';
 import Chart from 'chart.js/auto';
 import { TrainingsListService } from 'src/app/workout/services/trainings-list.service';
-import { cs } from 'date-fns/locale';
-import { format } from 'date-fns';
-import { WorkoutFromDB } from 'src/app/workout/models/TrainingsList.type';
 import { Router } from '@angular/router';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { toastStatus } from 'src/app/shared/enums/toastStatus.enum';
 import { toastMessages } from 'src/app/shared/enums/toastMessages.enum';
+import { Training } from 'src/app/workout/models/Training.type';
 
 @Component({
   selector: 'app-statistics',
@@ -20,7 +17,7 @@ export class StatisticsComponent implements OnInit {
   public chart: any;
   exercises: { name: string; muscle: string }[] = [];
   selectedExercise: { name: string; muscle: string } | undefined;
-  userTrainings: WorkoutFromDB[];
+  userTrainings: Training[];
   private currentYearTrainings: number[] = [];
   labels: any = [];
   datasets: any = [];

@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { IExerciseFromDB } from '../models/IExerciseFromDB.type';
-import { ExerciseDetails } from '../models/ExerciseDetails.type';
+
 import { ExercisesListService } from './exercises-list.service';
 import * as uuid from 'uuid';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { Exercise } from '../models/ExerciseWithId.type';
-import { NewTraining } from '../models/NewTraining.type';
+
+import { Training } from '../models/Training.type';
+import { ExerciseSet } from '../models/ExerciseSet.type';
+import { ExerciseWithId } from '../models/ExerciseWithId.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NewTrainingService {
-  newTraining: NewTraining = { date: new Date().toString(), exercises: {} };
+  newTraining: Training = { date: new Date().toString(), exercises: {} };
 
   constructor(
     private http: HttpClient,
@@ -37,13 +39,13 @@ export class NewTrainingService {
     this.exercisesListService.isListEmpty$.next(false);
   }
 
-  exercisesToArray(): Exercise[] {
+  exercisesToArray(): ExerciseWithId[] {
     return Object.keys(this.newTraining.exercises).map((key) => {
       return { id: key, ...this.newTraining.exercises[key] };
     });
   }
 
-  addSetsToExercise(exerciseId: string, sets: ExerciseDetails[]) {
+  addSetsToExercise(exerciseId: string, sets: ExerciseSet[]) {
     sets.forEach((set, index) => {
       const setId = `set${index + 1}`;
       this.newTraining.exercises[exerciseId].sets[setId] = set;

@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ExercisesListService } from '../../services/exercises-list.service';
 import { NewTrainingService } from '../../services/new-training.service';
-import { Exercise } from '../../models/ExerciseWithId.type';
+import { ExerciseWithId } from '../../models/ExerciseWithId.type';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./exercises-list.component.scss'],
 })
 export class ExercisesListComponent implements OnInit {
-  protected userExercises$ = new BehaviorSubject<Exercise[]>([]);
+  protected userExercises$ = new BehaviorSubject<ExerciseWithId[]>([]);
   isListEmpty: boolean;
   submitEmitter = new EventEmitter();
 

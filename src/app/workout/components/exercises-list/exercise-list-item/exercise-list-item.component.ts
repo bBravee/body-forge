@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ExerciseDetails } from 'src/app/workout/models/ExerciseDetails.type';
+import { ExerciseSet } from 'src/app/workout/models/ExerciseSet.type';
 import { ExercisesListService } from 'src/app/workout/services/exercises-list.service';
 import { NewTrainingService } from 'src/app/workout/services/new-training.service';
 
@@ -19,7 +18,6 @@ export class ExerciseListItemComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private exercisesListService: ExercisesListService,
-    private router: Router,
     private newTrainingService: NewTrainingService
   ) {}
 
@@ -30,7 +28,7 @@ export class ExerciseListItemComponent implements OnInit {
       sets: this.fb.array([], Validators.required),
     });
     this.updateIsSomeExerciseEmptyFlag(this.sets.value);
-    this.sets.valueChanges.subscribe((sets: ExerciseDetails[]) => {
+    this.sets.valueChanges.subscribe((sets: ExerciseSet[]) => {
       this.newTrainingService.addSetsToExercise(this.exercise.id, sets);
       this.handleValueChanges(sets);
     });
@@ -42,16 +40,16 @@ export class ExerciseListItemComponent implements OnInit {
     });
   }
 
-  private handleValueChanges(sets: ExerciseDetails[]): void {
+  private handleValueChanges(sets: ExerciseSet[]): void {
     this.updateIsSomeExerciseEmptyFlag(sets);
   }
 
-  private updateIsSomeExerciseEmptyFlag(sets: ExerciseDetails[]): void {
+  private updateIsSomeExerciseEmptyFlag(sets: ExerciseSet[]): void {
     const isEmpty = sets.length === 0 || sets.some(this.isExerciseDetailEmpty);
     this.exercisesListService.isSomeExerciseEmpty$.next(isEmpty);
   }
 
-  private isExerciseDetailEmpty(set: ExerciseDetails): boolean {
+  private isExerciseDetailEmpty(set: ExerciseSet): boolean {
     return set.reps === null || set.weight === null;
   }
 

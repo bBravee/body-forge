@@ -1,8 +1,8 @@
-import { ExerciseSet } from './TrainingsList.type';
+import { ExerciseSetWithId } from './ExerciseSetWithId.type';
 
-export type Exercise = {
+export type ExerciseWithId = {
   muscle: string;
   name: string;
-  sets: { [setId: string]: ExerciseSet };
+  sets: ExerciseSetWithId;
   id: string;
 };

@@ -1,4 +1,4 @@
-export type ExerciseDetails = {
+export type ExerciseSet = {
   reps: number;
   weight: number;
 };

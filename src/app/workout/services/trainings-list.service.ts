@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { ExerciseSet, WorkoutFromDB } from '../models/TrainingsList.type';
-import { last, map } from 'rxjs';
+import { map } from 'rxjs';
+import { Training } from '../models/Training.type';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class TrainingsListService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getTrainingsListForUser() {
-    return this.http.get<WorkoutFromDB[]>(
+    return this.http.get<Training[]>(
       `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings.json`
     );
   }
