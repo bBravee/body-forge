@@ -3,6 +3,7 @@ import { TrainingsListService } from './trainings-list.service';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Training } from '../models/Training.type';
+import { environment } from 'src/environments/environment.development';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,9 +18,7 @@ export class TrainingStatisticsService {
   ) {}
 
   getAllExercises() {
-    return this.http.get(
-      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/exercises.json`
-    );
+    return this.http.get(`${environment.firebase.databaseURL}/exercises.json`);
   }
 
   getTrainingDetails(training: Training) {

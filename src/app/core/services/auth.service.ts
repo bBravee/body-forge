@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ToastService } from './toast.service';
 import { toastStatus } from 'src/app/shared/enums/toastStatus.enum';
 import { toastMessages } from 'src/app/shared/enums/toastMessages.enum';
+import { environment } from 'src/environments/environment.development';
 
 interface User {
   uid: string;
@@ -108,7 +109,6 @@ export class AuthService {
   hasUser(id: any) {
     this.getAllUsers().subscribe((users) => {
       if (!Object.keys(users).includes(id)) {
-        // Dodanie nowego usera do bazy przekazująca paramsa z jego tokenem
       }
     });
   }
@@ -121,13 +121,13 @@ export class AuthService {
 
   getAllUsers() {
     return this.http.get(
-      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users.json?auth=${this.authToken}`
+      `${environment.firebase.databaseURL}/users.json?auth=${this.authToken}`
     );
   }
 
   addNewUser(id: string | undefined, username: string) {
     return this.http.post(
-      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${id}.json`,
+      `${environment.firebase.databaseURL}/users/${id}.json`,
       { registerDate: new Date().toDateString(), username }
     );
   }

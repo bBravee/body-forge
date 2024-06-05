@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { Training } from '../models/Training.type';
 import { ExerciseSet } from '../models/ExerciseSet.type';
 import { ExerciseWithId } from '../models/ExerciseWithId.type';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -61,7 +62,7 @@ export class NewTrainingService {
 
   saveNewTraining() {
     return this.http.post(
-      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/users/${this.authService.loggedUser.uid}/trainings.json`,
+      `${environment.firebase.databaseURL}/users/${this.authService.loggedUser.uid}/trainings.json`,
       this.newTraining
     );
   }

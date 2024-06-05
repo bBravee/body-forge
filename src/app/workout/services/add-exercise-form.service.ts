@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { IExerciseFromDB } from '../models/IExerciseFromDB.type';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class AddExerciseFormService {
 
   getExercises() {
     return this.http.get<IExerciseFromDB>(
-      `https://angular-training-app-60da2-default-rtdb.firebaseio.com/exercises.json`
+      `${environment.firebase.databaseURL}/exercises.json`
     );
   }
 
