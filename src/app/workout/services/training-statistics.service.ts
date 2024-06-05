@@ -1,16 +1,13 @@
-import { Injectable, TestabilityRegistry } from '@angular/core';
-import { WorkoutFromDB } from '../models/TrainingsList.type';
+import { Injectable } from '@angular/core';
 import { TrainingsListService } from './trainings-list.service';
-import { Exercise } from '../models/Exercise.type';
-import { BehaviorSubject, count, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from 'src/app/core/services/auth.service';
-
+import { Training } from '../models/Training.type';
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingStatisticsService {
-  trainingsList: WorkoutFromDB[];
+  trainingsList: Training[];
   favoriteExercises$ = new BehaviorSubject<string[]>([]);
   trainingsCount$ = new BehaviorSubject<number>(0);
 
@@ -25,7 +22,7 @@ export class TrainingStatisticsService {
     );
   }
 
-  getTrainingDetails(training: WorkoutFromDB) {
+  getTrainingDetails(training: Training) {
     const exercises = Object.values(training.exercises);
     let volume = 0;
 
