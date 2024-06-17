@@ -15,7 +15,7 @@ export class AddExerciseFormService {
 
   getExercises() {
     return this.http.get<IExerciseFromDB>(
-      `${environment.firebase.databaseURL}/exercises.json`
+      `${environment.firebase.databaseURL}/exercises.json?auth=${this.authService.authToken}`
     );
   }
 

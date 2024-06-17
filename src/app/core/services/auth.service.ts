@@ -1,9 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BehaviorSubject, from, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  from,
+  map,
+  switchMap,
+  tap,
+  throwError,
+} from 'rxjs';
 import { ICredentials } from 'src/app/shared/interfaces/ILogIn.model';
-import { Router } from '@angular/router';
+import { Router, RouterStateSnapshot } from '@angular/router';
 import { ToastService } from './toast.service';
 import { toastStatus } from 'src/app/shared/enums/toastStatus.enum';
 import { toastMessages } from 'src/app/shared/enums/toastMessages.enum';
@@ -24,28 +33,36 @@ export class AuthService {
   isLoggedUser$ = new BehaviorSubject<boolean>(false);
   loggedUser: any;
   fieldsInvalid: boolean;
-  authToken: any;
+  authToken: string | null;
   redirectUrl: string | null = null;
+  authToken$: Observable<string | null>;
 
   constructor(
     private auth: AngularFireAuth,
     private http: HttpClient,
     private router: Router,
     private toastService: ToastService
-  ) {
-    this.autoLogin();
-    this.auth.authState.subscribe((user) => {
-      if (user) {
-        this.loggedUser = user;
-        localStorage.setItem('user', JSON.stringify(this.loggedUser));
-        console.log(JSON.parse(localStorage.getItem('user')!));
-        this.isLoggedUser$.next(true);
-      } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
-        this.isLoggedUser$.next(false);
-      }
-    });
+  ) {}
+
+  extractUserInfo(userObj: any) {
+    const {
+      uid,
+      displayName,
+      _delegate: { accessToken },
+    } = userObj;
+    return { uid, displayName, accessToken };
+  }
+
+  private getToken(): Observable<string> {
+    return from(this.auth.currentUser).pipe(
+      switchMap((user) => {
+        if (user) {
+          return from(user.getIdToken());
+        } else {
+          return throwError('User not authenticated');
+        }
+      })
+    );
   }
 
   logIn(credentials: ICredentials) {
@@ -61,6 +78,10 @@ export class AuthService {
         this.auth.authState.subscribe({
           next: (user) => {
             if (user) {
+              this.loggedUser = this.extractUserInfo(user);
+              localStorage.setItem('user', JSON.stringify(this.loggedUser));
+              this.isLoggedUser$.next(true);
+
               this.toastService.showToast({
                 severity: toastStatus.success,
                 message: toastMessages.loginOk,
@@ -93,15 +114,13 @@ export class AuthService {
     });
   }
 
-  private autoLogin() {
-    this.loggedUser = JSON.parse(localStorage.getItem('user')!);
-  }
-
   logOut() {
     return from(this.auth.signOut()).pipe(
       tap(() => {
         localStorage.removeItem('user');
+        this.isLoggedUser$.next(false);
         this.router.navigate(['log-in']);
+        this.authToken = null;
       })
     );
   }
@@ -126,14 +145,29 @@ export class AuthService {
   }
 
   addNewUser(id: string | undefined, username: string) {
-    return this.http.post(
-      `${environment.firebase.databaseURL}/users/${id}.json`,
-      { registerDate: new Date().toDateString(), username }
+    return this.getToken().pipe(
+      switchMap((token) => {
+        const url = `${environment.firebase.databaseURL}/users/${id}.json?auth=${token}`;
+        return this.http.post(url, {
+          registerDate: new Date().toDateString(),
+          username,
+        });
+      }),
+      catchError((error) => {
+        console.error('Error adding new user:', error);
+        return throwError(error);
+      })
     );
   }
 
-  get isLoggedIn(): boolean {
+  isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null;
+
+    if (user) {
+      this.loggedUser = user;
+      this.authToken = this.loggedUser.accessToken;
+      return true;
+    }
+    return false;
   }
 }

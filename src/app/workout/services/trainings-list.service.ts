@@ -13,28 +13,13 @@ export class TrainingsListService {
 
   getTrainingsListForUser() {
     return this.http.get<Training[]>(
-      `${environment.firebase.databaseURL}/users/${this.authService.loggedUser.uid}/trainings.json`
+      `${environment.firebase.databaseURL}/users/${this.authService.loggedUser.uid}/trainings.json?auth=${this.authService.authToken}`
     );
-  }
-
-  getCurrentTraining() {
-    return this.http
-      .get<any>(
-        `${environment.firebase.databaseURL}/users/${this.authService.loggedUser.uid}/trainings.json`
-      )
-      .pipe(
-        map((res) => {
-          const keys = Object.keys(res);
-          const trainingKey = keys.length > 0 ? keys[keys.length - 1] : null;
-          console.log(res[trainingKey!]);
-          return { training: res[trainingKey!], trainingKey: trainingKey };
-        })
-      );
   }
 
   deleteTraining(id: string) {
     return this.http.delete(
-      `${environment.firebase.databaseURL}/users/${this.authService.loggedUser.uid}/trainings/${id}.json`
+      `${environment.firebase.databaseURL}/users/${this.authService.loggedUser.uid}/trainings/${id}.json?auth=${this.authService.authToken}`
     );
   }
 }

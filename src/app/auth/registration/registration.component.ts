@@ -47,6 +47,13 @@ export class RegistrationComponent implements OnInit {
             return from(res.user.updateProfile({ displayName: username })).pipe(
               switchMap(() => {
                 this.authService.isLoggedUser$.next(true);
+                this.authService.loggedUser = this.authService.extractUserInfo(
+                  res.user
+                );
+                localStorage.setItem(
+                  'user',
+                  JSON.stringify(this.authService.loggedUser)
+                );
                 return this.authService.addNewUser(res.user?.uid, username);
               })
             );

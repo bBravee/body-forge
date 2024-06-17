@@ -62,7 +62,7 @@ export class NewTrainingService {
 
   saveNewTraining() {
     return this.http.post(
-      `${environment.firebase.databaseURL}/users/${this.authService.loggedUser.uid}/trainings.json`,
+      `${environment.firebase.databaseURL}/users/${this.authService.loggedUser.uid}/trainings.json?auth=${this.authService.authToken}`,
       this.newTraining
     );
   }

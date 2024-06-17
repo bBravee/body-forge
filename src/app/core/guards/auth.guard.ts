@@ -17,10 +17,8 @@ export class AuthGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
-    if (this.authService.isLoggedIn !== true) {
-      if (!this.authService.redirectUrl) {
-        this.authService.redirectUrl = state.url;
-      }
+    if (!this.authService.isLoggedIn()) {
+      this.authService.redirectUrl = state.url;
       this.router.navigate(['log-in']);
       return false;
     }

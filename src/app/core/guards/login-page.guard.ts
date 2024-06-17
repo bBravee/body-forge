@@ -17,7 +17,7 @@ export class LoginPageGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
-    if (this.authService.isLoggedIn === true) {
+    if (this.authService.isLoggedIn()) {
       this.router.navigate(['workout-main']);
       return false;
     } else {

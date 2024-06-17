@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Training } from '../models/Training.type';
 import { environment } from 'src/environments/environment.development';
+import { AuthService } from 'src/app/core/services/auth.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -14,11 +15,14 @@ export class TrainingStatisticsService {
 
   constructor(
     private http: HttpClient,
-    private trainingListService: TrainingsListService
+    private trainingListService: TrainingsListService,
+    private authService: AuthService
   ) {}
 
   getAllExercises() {
-    return this.http.get(`${environment.firebase.databaseURL}/exercises.json`);
+    return this.http.get(
+      `${environment.firebase.databaseURL}/exercises.json?auth=${this.authService.authToken}`
+    );
   }
 
   getTrainingDetails(training: Training) {

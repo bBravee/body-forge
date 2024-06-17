@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { TrainingsListService } from '../../services/trainings-list.service';
 import { Training } from '../../models/Training.type';
 
@@ -11,6 +11,11 @@ export class TrainingsListComponent implements OnInit {
   protected trainingsList: Training[];
 
   constructor(private trainingsListService: TrainingsListService) {}
+
+  @HostBinding('style.overflow-y')
+  get overflowY() {
+    return this.trainingsList ? 'scroll' : 'unset';
+  }
 
   ngOnInit(): void {
     this.trainingsListService.getTrainingsListForUser().subscribe((res) => {
