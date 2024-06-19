@@ -44,16 +44,28 @@ export class AuthService {
     private toastService: ToastService
   ) {}
 
+  checkTokenExpiration(tokenExpTime: number) {
+    return Date.now() > tokenExpTime;
+  }
+
   extractUserInfo(userObj: any) {
     const {
       uid,
       displayName,
       _delegate: { accessToken },
+      _delegate: {
+        stsTokenManager: { expirationTime },
+      },
     } = userObj;
-    return { uid, displayName, accessToken };
+    return { uid, displayName, accessToken, expirationTime };
   }
 
-  private getToken(): Observable<string> {
+  getUserFromLS() {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user;
+  }
+
+  getToken(): Observable<string> {
     return from(this.auth.currentUser).pipe(
       switchMap((user) => {
         if (user) {
@@ -117,6 +129,7 @@ export class AuthService {
   logOut() {
     return from(this.auth.signOut()).pipe(
       tap(() => {
+        console.log('Logging out...');
         localStorage.removeItem('user');
         this.isLoggedUser$.next(false);
         this.router.navigate(['log-in']);
@@ -161,7 +174,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
+    const user = this.getUserFromLS();
 
     if (user) {
       this.loggedUser = user;

@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +17,20 @@ export class AuthGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
+    const { expirationTime } =
+      this.authService.isLoggedIn() && this.authService.getUserFromLS();
+
     if (!this.authService.isLoggedIn()) {
       this.authService.redirectUrl = state.url;
       this.router.navigate(['log-in']);
       return false;
+    }
+    if (
+      this.authService.isLoggedIn() &&
+      this.authService.checkTokenExpiration(expirationTime)
+    ) {
+      this.authService.redirectUrl = state.url;
+      return this.authService.logOut().pipe(map(() => true));
     }
     return true;
   }

@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +17,21 @@ export class LoginPageGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
-    if (this.authService.isLoggedIn()) {
+    const { expirationTime } =
+      this.authService.isLoggedIn() && this.authService.getUserFromLS();
+
+    if (!this.authService.isLoggedIn()) {
+      return true;
+    }
+
+    if (
+      this.authService.isLoggedIn() &&
+      !this.authService.checkTokenExpiration(expirationTime)
+    ) {
       this.router.navigate(['workout-main']);
       return false;
     } else {
-      return true;
+      return this.authService.logOut().pipe(map(() => true));
     }
   }
 }
