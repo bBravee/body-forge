@@ -15,14 +15,11 @@ export class TrainingStatisticsService {
 
   constructor(
     private http: HttpClient,
-    private trainingListService: TrainingsListService,
-    private authService: AuthService
+    private trainingListService: TrainingsListService
   ) {}
 
   getAllExercises() {
-    return this.http.get(
-      `${environment.firebase.databaseURL}/exercises.json?auth=${this.authService.authToken}`
-    );
+    return this.http.get(`${environment.firebase.databaseURL}/exercises.json`);
   }
 
   getTrainingDetails(training: Training) {

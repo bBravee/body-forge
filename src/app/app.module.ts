@@ -14,7 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { WorkoutModule } from './workout/workout.module';
@@ -25,6 +25,7 @@ import { environment } from 'src/environments/environment.development';
 import { AuthModule } from './auth/auth.module';
 import { StatisticsRoutingModule } from './statistics/statistics-routing.module';
 import { WorkoutRoutingModule } from './workout/workout-routing.module';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -54,7 +55,13 @@ import { WorkoutRoutingModule } from './workout/workout-routing.module';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
