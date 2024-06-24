@@ -21,6 +21,6 @@ export class WorkoutMainComponent implements OnInit {
   }
 
   addNewTraining() {
-    this.router.navigate(['/new-workout']);
+    this.router.navigate(['workout/new-workout']);
   }
 }

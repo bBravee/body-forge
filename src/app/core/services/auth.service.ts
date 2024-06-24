@@ -104,7 +104,7 @@ export class AuthService {
                 this.hasUser(user.uid);
               });
 
-              const redirectUrl = this.redirectUrl || '/workout-main';
+              const redirectUrl = this.redirectUrl || 'workout/workout-main';
               this.router.navigateByUrl(redirectUrl);
               this.redirectUrl = null;
             }
@@ -132,7 +132,7 @@ export class AuthService {
         console.log('Logging out...');
         localStorage.removeItem('user');
         this.isLoggedUser$.next(false);
-        this.router.navigate(['log-in']);
+        this.router.navigate(['/auth/log-in']);
         this.authToken = null;
       })
     );
@@ -160,7 +160,7 @@ export class AuthService {
   addNewUser(id: string | undefined, username: string) {
     return this.getToken().pipe(
       switchMap((token) => {
-        const url = `${environment.firebase.databaseURL}/users/${id}.json?auth=${token}`;
+        const url = `${environment.firebase.databaseURL}/users/${id}.json`;
         return this.http.post(url, {
           registerDate: new Date().toDateString(),
           username,
@@ -178,6 +178,7 @@ export class AuthService {
 
     if (user) {
       this.loggedUser = user;
+      this.isLoggedUser$.next(true);
       this.authToken = this.loggedUser.accessToken;
       return true;
     }

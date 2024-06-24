@@ -1,29 +1,35 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthFormComponent } from './auth/auth-form/auth-form.component';
-import { RegistrationComponent } from './auth/registration/registration.component';
-import { LoginPageGuard } from './core/guards/login-page.guard';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/log-in',
+    redirectTo: 'auth/log-in',
     pathMatch: 'full',
   },
   {
-    path: 'log-in',
-    component: AuthFormComponent,
-    pathMatch: 'full',
-    canActivate: [LoginPageGuard],
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'register',
-    component: RegistrationComponent,
+    path: 'statistics',
+    loadChildren: () =>
+      import('./statistics/statistics.module').then((m) => m.StatisticsModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'workout',
+    loadChildren: () =>
+      import('./workout/workout.module').then((m) => m.WorkoutModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: '**',
+    redirectTo: 'workout/workout-main',
     pathMatch: 'full',
-    canActivate: [LoginPageGuard],
   },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

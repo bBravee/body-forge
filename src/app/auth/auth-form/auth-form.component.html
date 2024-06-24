@@ -74,13 +74,9 @@
           ></button>
         </div>
         <div class="col-12 md:col-6">
-          <button
-            routerLink="/register"
-            pButton
-            pRipple
-            label="Sign up"
-            class="w-full"
-          ></button>
+          <a [routerLink]="['/auth/register']" class="w-full">
+            <button pButton pRipple label="Sign up" class="w-full"></button>
+          </a>
         </div>
       </div>
     </form>

@@ -7,19 +7,17 @@ import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'statistics',
+    path: '',
     component: StatisticsComponent,
-    canActivate: [AuthGuard],
   },
   {
-    path: 'statistics/:exerciseStats',
+    path: ':exerciseStats',
     component: ExersiseStatsComponent,
-    canActivate: [AuthGuard],
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
 export class StatisticsRoutingModule {}

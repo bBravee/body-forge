@@ -22,7 +22,7 @@ export class AuthGuard {
 
     if (!this.authService.isLoggedIn()) {
       this.authService.redirectUrl = state.url;
-      this.router.navigate(['log-in']);
+      this.router.navigate(['auth/log-in']);
       return false;
     }
     if (

@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { RegistrationComponent } from './registration/registration.component';
+import { AuthRoutingModule } from './auth-routing.module';
 
 @NgModule({
   declarations: [AuthFormComponent, RegistrationComponent],
@@ -15,6 +16,7 @@ import { RegistrationComponent } from './registration/registration.component';
     ButtonModule,
     ReactiveFormsModule,
     SharedModule,
+    AuthRoutingModule,
   ],
 })
 export class AuthModule {}

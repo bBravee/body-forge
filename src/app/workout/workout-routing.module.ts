@@ -8,20 +8,23 @@ import { canDeactivateGuard } from '../core/guards/can-deactivate-guard.guard';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'workout-main',
+    pathMatch: 'full',
+  },
+  {
     path: 'workout-main',
     component: WorkoutMainComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'new-workout',
     component: NewWorkoutComponent,
-    canActivate: [AuthGuard],
     canDeactivate: [canDeactivateGuard],
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
 export class WorkoutRoutingModule {}

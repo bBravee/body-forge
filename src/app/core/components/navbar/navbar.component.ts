@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
       this.items = [
         {
           label: 'Workouts',
-          routerLink: 'workout-main',
+          routerLink: 'workout/workout-main',
           visible: res,
         },
         {
@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
         {
           label: 'Log out',
           command: () => this.authService.logOut().subscribe(),
-          // visible: !res,
+          visible: res,
         },
         {
           label: 'Log in',

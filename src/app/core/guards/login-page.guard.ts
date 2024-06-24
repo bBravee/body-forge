@@ -28,7 +28,7 @@ export class LoginPageGuard {
       this.authService.isLoggedIn() &&
       !this.authService.checkTokenExpiration(expirationTime)
     ) {
-      this.router.navigate(['workout-main']);
+      this.router.navigate(['workout/workout-main']);
       return false;
     } else {
       return this.authService.logOut().pipe(map(() => true));

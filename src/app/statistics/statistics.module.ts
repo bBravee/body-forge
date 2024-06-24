@@ -6,9 +6,20 @@ import { RouterModule } from '@angular/router';
 import { StatsUserPanelComponent } from './components/stats-user-panel/stats-user-panel.component';
 import { SharedModule } from '../shared/shared.module';
 import { ExersiseStatsComponent } from './components/exersise-stats/exersise-stats.component';
+import { StatisticsRoutingModule } from './statistics-routing.module';
 
 @NgModule({
-  declarations: [StatisticsComponent, StatsUserPanelComponent, ExersiseStatsComponent],
-  imports: [CommonModule, ButtonModule, RouterModule, SharedModule],
+  declarations: [
+    StatisticsComponent,
+    StatsUserPanelComponent,
+    ExersiseStatsComponent,
+  ],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    RouterModule,
+    SharedModule,
+    StatisticsRoutingModule,
+  ],
 })
 export class StatisticsModule {}

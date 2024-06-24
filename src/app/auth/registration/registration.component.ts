@@ -70,7 +70,7 @@ export class RegistrationComponent implements OnInit {
             severity: toastStatus.success,
             message: toastMessages.loginOk,
           });
-          this.router.navigate(['workout-main']);
+          this.router.navigate(['workout/workout-main']);
         }),
         catchError((error: any) => {
           this.toastService.showToast({

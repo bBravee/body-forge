@@ -45,7 +45,7 @@ export class ExercisesListComponent implements OnInit {
   private submitExercises() {
     this.newTrainingService
       .saveNewTraining()
-      .subscribe(() => this.router.navigate(['workout-main']));
+      .subscribe(() => this.router.navigate(['workout/workout-main']));
     this.submitEmitter.emit();
   }
 
