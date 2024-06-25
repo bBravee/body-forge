@@ -26,6 +26,7 @@ import { AuthModule } from './auth/auth.module';
 import { StatisticsRoutingModule } from './statistics/statistics-routing.module';
 import { WorkoutRoutingModule } from './workout/workout-routing.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -59,6 +60,11 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
       multi: true,
     },
   ],

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { LoadingService } from './core/services/loading.service';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,23 +11,19 @@ import { MenuItem } from 'primeng/api';
 export class AppComponent implements OnInit {
   selectedDate: Date;
   displayDialog: boolean = false;
-  items: MenuItem[];
+  loading: boolean = false;
 
-  private initializeMenu(): void {
-    this.items = [
-      {
-        label: 'Workout',
-        routerLink: '/workout-main',
-      },
-      {
-        label: 'stats',
-        routerLink: '/statistics',
-      },
-    ];
-  }
+  constructor(private loadingService: LoadingService) {}
 
   ngOnInit(): void {
-    this.initializeMenu();
+    this.listenToLoading();
+  }
+
+  private listenToLoading(): void {
+    this.loadingService.isLoading$.pipe(delay(0)).subscribe((loading) => {
+      console.log(loading);
+      this.loading = loading;
+    });
   }
 
   showDialog(event: any) {
