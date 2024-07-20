@@ -5,8 +5,10 @@ import {
   BehaviorSubject,
   Observable,
   catchError,
+  filter,
   from,
   map,
+  of,
   switchMap,
   tap,
   throwError,
@@ -85,44 +87,40 @@ export class AuthService {
       )
     );
 
-    signInObservable.subscribe({
-      next: () => {
-        this.auth.authState.subscribe({
-          next: (user) => {
-            if (user) {
+    signInObservable
+      .pipe(
+        switchMap(() =>
+          this.auth.authState.pipe(
+            filter((user) => !!user),
+            switchMap((user) => {
               this.loggedUser = this.extractUserInfo(user);
               localStorage.setItem('user', JSON.stringify(this.loggedUser));
               this.isLoggedUser$.next(true);
+              console.log(this.loggedUser);
 
               this.toastService.showToast({
                 severity: toastStatus.success,
                 message: toastMessages.loginOk,
               });
 
-              user.getIdToken().then((token) => {
-                this.authToken = token;
-              });
-
-              const redirectUrl = this.redirectUrl || 'workout/workout-main';
-              this.router.navigateByUrl(redirectUrl);
-              this.redirectUrl = null;
-            }
-          },
-          error: (error) => {
-            this.toastService.showToast({
-              severity: toastStatus.error,
-              message: toastMessages.loginError,
-            });
-          },
-        });
-      },
-      error: (error) => {
-        this.toastService.showToast({
-          severity: toastStatus.error,
-          message: toastMessages.loginError,
-        });
-      },
-    });
+              return of(this.loggedUser);
+            })
+          )
+        )
+      )
+      .subscribe({
+        next: () => {
+          const redirectUrl = this.redirectUrl || 'workout/workout-main';
+          this.router.navigateByUrl(redirectUrl);
+          this.redirectUrl = null;
+        },
+        error: (error) => {
+          this.toastService.showToast({
+            severity: toastStatus.error,
+            message: toastMessages.loginError,
+          });
+        },
+      });
   }
 
   logOut() {

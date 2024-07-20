@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.service';
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
-  private authToken: string = this.authService.authToken!;
+  private authToken: string = this.authService.loggedUser.accessToken!;
 
   intercept(
     req: HttpRequest<any>,
