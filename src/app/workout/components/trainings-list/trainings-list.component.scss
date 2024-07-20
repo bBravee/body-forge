@@ -1,6 +1,6 @@
 :host {
     height: 1000px;
-    width: 25%;
+    width: 100%;
 }
 
 
@@ -13,7 +13,7 @@
     background-color: var(--surface-a);
     border: 1px solid var(--surface-d);
     padding: 2rem;
-    width: 100%;
+    width: 35%;
 }
 
 :host::-webkit-scrollbar {
@@ -29,3 +29,17 @@
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
+
+@media (width <= 600px) {
+    .training-list-item {
+        width: 100%; 
+    }
+}
+
+@media (600px <= width <= 900px) {
+    .training-list-item {
+        width: 70%; 
+    }
+}
+
+

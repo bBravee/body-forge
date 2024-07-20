@@ -101,7 +101,6 @@ export class AuthService {
 
               user.getIdToken().then((token) => {
                 this.authToken = token;
-                this.hasUser(user.uid);
               });
 
               const redirectUrl = this.redirectUrl || 'workout/workout-main';
@@ -138,22 +137,9 @@ export class AuthService {
     );
   }
 
-  hasUser(id: any) {
-    this.getAllUsers().subscribe((users) => {
-      if (!Object.keys(users).includes(id)) {
-      }
-    });
-  }
-
   register(user: ICredentials) {
     return from(
       this.auth.createUserWithEmailAndPassword(user.email, user.password)
-    );
-  }
-
-  getAllUsers() {
-    return this.http.get(
-      `${environment.firebase.databaseURL}/users.json?auth=${this.authToken}`
     );
   }
 
