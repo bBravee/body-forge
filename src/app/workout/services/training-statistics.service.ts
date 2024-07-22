@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Training } from '../models/Training.type';
 import { environment } from 'src/environments/environment.development';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { Exercise } from '../models/Exercise.type';
+import { ExerciseSet } from '../models/ExerciseSet.type';
 @Injectable({
   providedIn: 'root',
 })
@@ -48,13 +50,25 @@ export class TrainingStatisticsService {
     return `${day}-${month}-${year}`;
   }
 
-  computeMaxExerciseWeight(exercise: any) {
-    const sets: any[] = Object.values(exercise.sets);
-    const maxWeight = sets.reduce(
-      (max, current) => (current.weight > max ? current.weight : max),
+  computeMaxExerciseAttribute(
+    exercise: Exercise,
+    attribute: 'weight' | 'reps'
+  ): number {
+    const sets: ExerciseSet[] = Object.values(exercise.sets);
+    console.log(sets);
+    const maxAttribute = sets.reduce(
+      (max, current) => (current[attribute] > max ? current[attribute] : max),
       0
     );
-    return maxWeight;
+    return maxAttribute;
+  }
+
+  computeMaxExerciseWeight(exercise: Exercise): number {
+    return this.computeMaxExerciseAttribute(exercise, 'weight');
+  }
+
+  computeMaxExerciseReps(exercise: Exercise): number {
+    return this.computeMaxExerciseAttribute(exercise, 'reps');
   }
 
   getFavoriteExercise() {

@@ -1,25 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Chart } from 'chart.js';
 import { TrainingStatisticsService } from 'src/app/workout/services/training-statistics.service';
-import Chart from 'chart.js/auto';
 import { TrainingsListService } from 'src/app/workout/services/trainings-list.service';
 
 @Component({
-  selector: 'app-exersise-stats',
-  templateUrl: './exersise-stats.component.html',
-  styleUrls: ['./exersise-stats.component.scss'],
+  selector: 'app-max-exercise-reps-chart',
+  templateUrl: './max-exercise-reps-chart.component.html',
+  styleUrls: ['./max-exercise-reps-chart.component.scss'],
 })
-export class ExersiseStatsComponent implements OnInit {
+export class MaxExerciseRepsChartComponent {
   public chart: any;
   private labels: any = [];
   private datasets: any = [];
   private choosenExercise: string;
   private colors = {
     purple: {
-      default: 'rgba(149, 76, 233, 1)',
-      half: 'rgba(149, 76, 233, 0.5)',
-      quarter: 'rgba(149, 76, 233, 0.25)',
-      zero: 'rgba(149, 76, 233, 0)',
+      default: 'rgba(76, 79, 233, 1)',
+      half: 'rgba(76, 79, 233, 0.5)',
+      quarter: 'rgba(76, 79, 233, 0.25)',
+      zero: 'rgba(76, 79, 233, 0)',
     },
     indigo: {
       default: 'rgba(80, 102, 120, 1)',
@@ -58,9 +58,7 @@ export class ExersiseStatsComponent implements OnInit {
                 )
               );
               this.datasets.push(
-                this.trainingStatisticsService.computeMaxExerciseWeight(
-                  exercise
-                )
+                this.trainingStatisticsService.computeMaxExerciseReps(exercise)
               );
             }
           });
@@ -70,7 +68,7 @@ export class ExersiseStatsComponent implements OnInit {
   }
 
   private createChart(labels: any, datasets: any) {
-    const canvas = <HTMLCanvasElement>document.getElementById('MyChart');
+    const canvas = <HTMLCanvasElement>document.getElementById('MyChart2');
     const ctx = canvas.getContext('2d');
 
     this.gradient = ctx?.createLinearGradient(0, 0, 0, 700);
@@ -78,7 +76,7 @@ export class ExersiseStatsComponent implements OnInit {
     this.gradient.addColorStop(0.4, this.colors.purple.quarter);
     this.gradient.addColorStop(1, this.colors.purple.zero);
 
-    this.chart = new Chart('MyChart', {
+    this.chart = new Chart('MyChart2', {
       type: 'line',
 
       data: {
@@ -101,7 +99,7 @@ export class ExersiseStatsComponent implements OnInit {
         plugins: {
           title: {
             display: true,
-            text: `Maximum weight used in individual training sessions (${this.choosenExercise})`,
+            text: `Maximum reps done in individual training sessions (${this.choosenExercise})`,
             font: {
               size: 24,
             },

@@ -1,0 +1,11 @@
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90dvw;
+    height: 45dvh;
+}
+
+canvas {
+    width: 90%  !important;
+}

@@ -7,12 +7,14 @@ import { StatsUserPanelComponent } from './components/stats-user-panel/stats-use
 import { SharedModule } from '../shared/shared.module';
 import { ExersiseStatsComponent } from './components/exersise-stats/exersise-stats.component';
 import { StatisticsRoutingModule } from './statistics-routing.module';
+import { MaxExerciseRepsChartComponent } from './components/charts/max-exercise-reps-chart/max-exercise-reps-chart.component';
 
 @NgModule({
   declarations: [
     StatisticsComponent,
     StatsUserPanelComponent,
     ExersiseStatsComponent,
+    MaxExerciseRepsChartComponent,
   ],
   imports: [
     CommonModule,
