@@ -8,3 +8,11 @@
         box-shadow: var(--focus-ring);
     }
 }
+
+@media (width < 576px) {
+    .exercise-item {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}

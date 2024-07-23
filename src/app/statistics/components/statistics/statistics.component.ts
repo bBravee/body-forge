@@ -117,6 +117,8 @@ export class StatisticsComponent implements OnInit {
         ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           title: {
             display: true,
@@ -126,7 +128,6 @@ export class StatisticsComponent implements OnInit {
             },
           },
         },
-        aspectRatio: 2.5,
       },
     });
   }

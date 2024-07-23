@@ -2,7 +2,7 @@
   <div class="flex align-items-center justify-content-center">
     <p-avatar
       class="flex align-items-center justify-content-center"
-      icon="pi pi-user"
+      icon="pi pi-image"
       shape="circle"
       size="xlarge"
     ></p-avatar>
@@ -10,20 +10,20 @@
   <p-divider layout="horizontal"></p-divider>
   <div class="flex w-full justify-content-between">
     <div class="flex justify-content-center gap-4 w-full">
-      <h1>{{ exercise.name }} ({{ exercise.muscle }})</h1>
+      <h1 class="text-center">{{ exercise.name }} ({{ exercise.muscle }})</h1>
     </div>
   </div>
   <p-button class="w-full" label="Add Set" (click)="addSet()"></p-button>
   <form [formGroup]="setForm" class="flex flex-column gap-2">
     <ng-container *ngIf="sets.length > 0">
       <div class="grid">
-        <div class="col-2"><h3>Set</h3></div>
+        <div class="col-2 pr-4"><h3>Set</h3></div>
         <div class="col-4"><h3>Reps</h3></div>
         <div class="col-4 ml-3"><h3>Weight</h3></div>
       </div>
       <div formArrayName="sets" *ngFor="let s of sets.controls; let i = index">
         <div [formGroupName]="i" class="grid mb-2">
-          <h2 class="col-2">{{ i + 1 }}</h2>
+          <h2 class="col-1 pr-4">{{ i + 1 }}</h2>
           <input
             class="col-4"
             type="number"
@@ -38,7 +38,9 @@
             formControlName="weight"
             id="{{ 'weight' + i }}"
           />
-          <div class="col-1 flex align-items-center justify-content-center">
+          <div
+            class="col-1 pl-4 flex align-items-center justify-content-center"
+          >
             <i class="pi pi-trash delete-set-icon" (click)="deleteSet(i)"></i>
           </div>
         </div>

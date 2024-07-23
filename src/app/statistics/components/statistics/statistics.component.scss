@@ -1,4 +1,5 @@
 :host {
+    height: 100dvh;
     ::ng-deep .p-dropdown {
             width: 50%;
             padding: 3%;
@@ -25,7 +26,20 @@
 }
 }
 
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90dvw;
+    height: 50dvh;
+}
 
 canvas {
     width: 75%  !important;
+}
+
+@media(width <= 758px) {
+    .chart-container {
+        height: 35dvh;
+    }
 }
