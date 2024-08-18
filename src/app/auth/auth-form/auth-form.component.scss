@@ -4,6 +4,7 @@
 }
 
 .body-forge-image {
+    padding: 1rem;
     width: 800px;
 }
 
@@ -18,7 +19,21 @@
     background-color: #304562;
     height: 100%;
     width: 45%;
-    border-radius: 50px;
+    border-radius: 50px 0px 0px 50px;
+}
+
+@media(width <= 1000px) {
+    .log-in-wrapper {
+        flex-direction: column;
+    }
+
+    .left-col {
+        width: 100%;
+    }
+    .right-col {
+        width: 100%;
+        border-radius: 50px 50px 0px 0px;
+    }
 }
 
 h1 {
