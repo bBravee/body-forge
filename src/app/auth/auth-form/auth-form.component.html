@@ -1,19 +1,24 @@
 <div
-  class="w-full h-full flex flex-column justify-content-center align-items-center"
+  class="log-in-wrapper h-full flex justify-content-center align-items-center"
 >
+  <div class="left-col flex justify-content-center align-items-center">
+    <img
+      src="../../../assets/images/BFLogo.svg"
+      class="body-forge-image"
+      alt=""
+    />
+  </div>
   <div
-    class="w-6 py-8 flex flex-column justify-content-center align-items-center"
+    class="right-col flex flex-column justify-content-center align-items-center"
   >
-    <h1>Log In</h1>
+    <h1 class="w-8 p-2">Login to your Account</h1>
     <form
       [formGroup]="logInForm"
       (ngSubmit)="logIn()"
-      class="card flex flex-column justify-content-center align-items-center w-8 m-6 gap-3"
+      class="card flex flex-column justify-content-center align-items-center w-8 p-2 gap-4"
     >
-      <div class="p-inputgroup">
-        <span class="p-inputgroup-addon">
-          <i class="pi pi-envelope"></i>
-        </span>
+      <div class="flex flex-column w-full gap-2">
+        <label for="email">Email</label>
         <input
           [ngClass]="{
             'login-input':
@@ -21,24 +26,23 @@
                 logInForm.controls['email'].value === '') ||
               fieldsInvalid
           }"
+          id="email"
+          placeholder="mail@xyz.com"
           pInputText
-          placeholder="Email"
           formControlName="email"
         />
+        <small
+          *ngIf="
+            logInForm.controls['email'].touched &&
+            logInForm.controls['email'].value === ''
+          "
+          id="login-help"
+          class="login-help"
+          >Email field is required.</small
+        >
       </div>
-      <small
-        *ngIf="
-          logInForm.controls['email'].touched &&
-          logInForm.controls['email'].value === ''
-        "
-        id="login-help"
-        class="login-help"
-        >Email field is required.</small
-      >
-      <div class="p-inputgroup">
-        <span class="p-inputgroup-addon">
-          <i class="pi pi-lock"></i>
-        </span>
+      <div class="flex flex-column w-full gap-2">
+        <label for="email">Password</label>
         <input
           [ngClass]="{
             'login-input':
@@ -46,39 +50,37 @@
                 logInForm.controls['password'].value === '') ||
               fieldsInvalid
           }"
+          id="password"
           type="password"
+          placeholder="••••••"
           pInputText
-          placeholder="Password"
           formControlName="password"
         />
+        <small
+          *ngIf="
+            logInForm.controls['password'].touched &&
+            logInForm.controls['password'].value === ''
+          "
+          id="login-help"
+          class="login-help"
+          >Password field is required.</small
+        >
       </div>
-      <small
-        *ngIf="
-          logInForm.controls['password'].touched &&
-          logInForm.controls['password'].value === ''
-        "
-        id="login-help"
-        class="login-help"
-        >Password field is required.</small
-      >
-      <div
-        class="grid w-full flex flex-row justify-content-center align-items-center"
-      >
-        <div class="col-12 md:col-6">
-          <button
-            [disabled]="!logInForm.valid"
-            pButton
-            pRipple
-            label="Submit"
-            class="w-full"
-          ></button>
-        </div>
-        <div class="col-12 md:col-6">
-          <a [routerLink]="['/auth/register']" class="w-full">
-            <button pButton pRipple label="Sign up" class="w-full"></button>
-          </a>
-        </div>
+      <div class="w-full pt-3">
+        <button
+          [disabled]="!logInForm.valid"
+          pButton
+          pRipple
+          label="Login"
+          class="w-full"
+        ></button>
       </div>
+      <p class="pt-8">
+        Not Registered Yet?
+        <a [routerLink]="['/auth/register']" class="register-link w-full">
+          Create an account
+        </a>
+      </p>
     </form>
   </div>
 </div>

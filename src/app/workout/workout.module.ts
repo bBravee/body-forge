@@ -32,7 +32,6 @@ import { WorkoutRoutingModule } from './workout-routing.module';
   ],
   imports: [
     CommonModule,
-    DividerModule,
     ReactiveFormsModule,
     RouterModule,
     ButtonModule,

@@ -27,6 +27,7 @@ import { StatisticsRoutingModule } from './statistics/statistics-routing.module'
 import { WorkoutRoutingModule } from './workout/workout-routing.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import { SharedModule } from 'primeng/api';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,7 +43,6 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
     // Primeng
     ButtonModule,
     MenubarModule,
-    DividerModule,
     CalendarModule,
     InputTextModule,
     DialogModule,
@@ -52,6 +52,7 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
     CoreModule,
     StatisticsModule,
     AuthModule,
+    SharedModule,
     //Firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,

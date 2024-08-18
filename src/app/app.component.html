@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="shouldShowNavbar"></app-navbar>
 <app-toast></app-toast>
 <app-loading-spinner *ngIf="loading"></app-loading-spinner>
 <router-outlet></router-outlet>

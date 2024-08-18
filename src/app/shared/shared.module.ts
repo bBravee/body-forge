@@ -14,6 +14,7 @@ import { TableModule } from 'primeng/table';
 import { RouterModule } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     TableModule,
     RouterModule,
     DropdownModule,
+    DividerModule,
   ],
   exports: [
     ToastModule,
@@ -46,6 +48,7 @@ import { FormsModule } from '@angular/forms';
     TableModule,
     RouterModule,
     DropdownModule,
+    DividerModule,
   ],
   providers: [ConfirmationService, MessageService, DialogService],
 })
