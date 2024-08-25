@@ -17,21 +17,15 @@ export class LoginPageGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
-    const { expirationTime } =
-      this.authService.isLoggedIn() && this.authService.getUserFromLS();
-
-    if (!this.authService.isLoggedIn()) {
-      return true;
-    }
-
-    if (
-      this.authService.isLoggedIn() &&
-      !this.authService.checkTokenExpiration(expirationTime)
-    ) {
-      this.router.navigate(['workout/workout-main']);
-      return false;
-    } else {
-      return this.authService.logOut().pipe(map(() => true));
-    }
+    return this.authService.isLoggedIn().pipe(
+      map((isLoggedIn: boolean) => {
+        if (isLoggedIn) {
+          this.router.navigate(['workout/workout-main']);
+          return false;
+        } else {
+          return true;
+        }
+      })
+    );
   }
 }

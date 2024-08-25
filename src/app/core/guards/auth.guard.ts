@@ -17,21 +17,16 @@ export class AuthGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
-    const { expirationTime } =
-      this.authService.isLoggedIn() && this.authService.getUserFromLS();
-
-    if (!this.authService.isLoggedIn()) {
-      this.authService.redirectUrl = state.url;
-      this.router.navigate(['auth/log-in']);
-      return false;
-    }
-    if (
-      this.authService.isLoggedIn() &&
-      this.authService.checkTokenExpiration(expirationTime)
-    ) {
-      this.authService.redirectUrl = state.url;
-      return this.authService.logOut().pipe(map(() => true));
-    }
-    return true;
+    return this.authService.isLoggedIn().pipe(
+      map((isLoggedIn: boolean) => {
+        if (isLoggedIn) {
+          return true;
+        } else {
+          this.authService.redirectUrl = state.url;
+          this.router.navigate(['auth/log-in']);
+          return false;
+        }
+      })
+    );
   }
 }
