@@ -19,6 +19,7 @@ import { ToastService } from './toast.service';
 import { toastStatus } from 'src/app/shared/enums/toastStatus.enum';
 import { toastMessages } from 'src/app/shared/enums/toastMessages.enum';
 import { environment } from 'src/environments/environment.development';
+import { LoggedUser } from 'src/app/workout/models/LoggedUser.type';
 
 interface User {
   uid: string;
@@ -33,7 +34,7 @@ interface User {
 })
 export class AuthService {
   isLoggedUser$ = new BehaviorSubject<boolean>(false);
-  loggedUser: any;
+  loggedUser: LoggedUser;
   fieldsInvalid: boolean;
   authToken: string | null;
   redirectUrl: string | null = null;
@@ -44,13 +45,19 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private toastService: ToastService
-  ) {}
+  ) {
+    this.auth.authState.subscribe((user) => {
+      if (user) {
+        this.loggedUser = this.extractUserInfo(user);
+      }
+    });
+  }
 
   checkTokenExpiration(tokenExpTime: number) {
     return Date.now() > tokenExpTime;
   }
 
-  extractUserInfo(userObj: any) {
+  extractUserInfo(userObj: any): LoggedUser {
     const {
       uid,
       displayName,
@@ -80,41 +87,34 @@ export class AuthService {
   }
 
   logIn(credentials: ICredentials) {
-    const signInObservable = from(
-      this.auth.signInWithEmailAndPassword(
-        credentials.email,
-        credentials.password
-      )
-    );
-
-    signInObservable
+    from(this.auth.setPersistence('session'))
       .pipe(
         switchMap(() =>
-          this.auth.authState.pipe(
-            filter((user) => !!user),
-            switchMap((user) => {
-              this.loggedUser = this.extractUserInfo(user);
-              localStorage.setItem('user', JSON.stringify(this.loggedUser));
-              this.isLoggedUser$.next(true);
-              console.log(this.loggedUser);
-
-              this.toastService.showToast({
-                severity: toastStatus.success,
-                message: toastMessages.loginOk,
-              });
-
-              return of(this.loggedUser);
-            })
+          from(
+            this.auth.signInWithEmailAndPassword(
+              credentials.email,
+              credentials.password
+            )
           )
         )
       )
       .subscribe({
-        next: () => {
+        next: (usrCredentials) => {
+          const user = usrCredentials.user;
+
+          this.loggedUser = this.extractUserInfo(user);
+          this.isLoggedUser$.next(true);
+
+          this.toastService.showToast({
+            severity: toastStatus.success,
+            message: toastMessages.loginOk,
+          });
+
           const redirectUrl = this.redirectUrl || 'workout/workout-main';
           this.router.navigateByUrl(redirectUrl);
           this.redirectUrl = null;
         },
-        error: (error) => {
+        error: () => {
           this.toastService.showToast({
             severity: toastStatus.error,
             message: toastMessages.loginError,
@@ -157,15 +157,17 @@ export class AuthService {
     );
   }
 
-  isLoggedIn(): boolean {
-    const user = this.getUserFromLS();
-
-    if (user) {
-      this.loggedUser = user;
-      this.isLoggedUser$.next(true);
-      this.authToken = this.loggedUser.accessToken;
-      return true;
-    }
-    return false;
+  isLoggedIn(): Observable<boolean> {
+    return this.auth.authState.pipe(
+      map((user) => {
+        if (user) {
+          this.isLoggedUser$.next(true);
+          this.authToken = this.loggedUser.accessToken;
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
   }
 }
